@@ -37,6 +37,7 @@ Core components include:
 
 ## Access & Integration
 
+Looking for integration code? Check out [examples/l402_agent_flow.py](https://github.com/Bidda-Ai/sovereign-intelligence-docs/blob/main/examples/l402_agent_flow.py) to see how agents handle the HTTP 402 payment challenge natively in Python.
 The Bidda Sovereign Intelligence Forest supports dual-path integration:
 
 ### 1. Autonomous Agent Path (L402)
