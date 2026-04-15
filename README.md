@@ -1,49 +1,127 @@
-# Bidda Sovereign Intelligence Forest
+# Bidda Sovereign Intelligence Forest — Developer Documentation
 
-**The deterministic translation layer for the agentic economy.**
+> **784 cryptographically-signed, source-verified compliance nodes across 15 Sovereign Pillars.**
 
-Official documentation and schemas for the Bidda Sovereign Intelligence Forest.
-
-Bidda provides cryptographically verified, machine-readable regulatory compliance schemas for autonomous AI agents. We bridge the gap between volatile, probabilistic Large Language Models (LLMs) and strict, high-stakes enterprise compliance frameworks (NIST, ISO, HIPAA, EU AI Act).
+Bidda is a deterministic regulatory intelligence layer for autonomous AI agents operating in regulated industries. Instead of asking an LLM to recall compliance rules from training data (and hallucinate), your agent fetches verified boolean logic directly from primary legal sources — distilled into machine-executable JSON.
 
 ---
 
-## The Problem: Hallucination in Enterprise Workflows
-Current autonomous agents cannot be deployed in highly regulated environments (Banking, Defense, Aviation, Healthcare) because probabilistic models hallucinate rules, timelines, and reporting structures. A single AI hallucination in a SWIFT transaction or a GDPR workflow results in catastrophic legal liability.
+## Why This Exists
 
-## The Solution: Deterministic Intelligence Nodes
-The Sovereign Intelligence Forest is a registry of 500+ cryptographically hardened JSON nodes. Instead of relying on an LLM to "remember" a regulation, enterprise agents fetch the exact, deterministic boolean logic required to execute a compliant workflow. 
+Probabilistic language models cannot guarantee regulatory accuracy. A model trained on legal text will approximate rules, invent thresholds, and conflate jurisdictions. In banking, healthcare, aviation, and AI governance, this is not a performance issue — it is a liability.
 
-### The Dual-Engine Verification Architecture
-Bidda nodes are not manually written text files. They are the output of a rigorous, mathematically verified pipeline:
-1. **Stateless Generation:** Raw regulatory text is ingested and mapped via high-fidelity AI orchestration.
-2. **Deterministic Audit:** A strict programmatic gateway verifies the presence, formatting, and boolean validity of the schema.
-3. **Cryptographic Signing:** The node is hashed (SHA-256) and version-controlled, guaranteeing that the agent is executing the exact, untampered legal logic.
+Bidda eliminates this by serving **deterministic nodes**: each one distilled from a primary legal source, cryptographically signed, and structured so that any agent can execute it without inference.
 
 ---
 
-## The Golden Schema (13-Key Architecture)
-Every node in the forest adheres to the Bidda "Golden Schema," ensuring seamless interoperability across all agentic frameworks (LangChain, AutoGen, LlamaIndex). 
+## Two-Tier API Architecture
 
-Core components include:
-* `bluf` (Bottom Line Up Front for instant agent context)
-* `actionable_schema` (The hardcoded boolean logic and triggers)
-* `nist_crosswalk` (Direct mapping to enterprise cybersecurity standards)
-* `l402_paywall` (Native Web3/Skyfire integration parameters)
+All nodes are served through a two-tier system:
 
-*(Detailed documentation of the 13 keys can be found in the `/schemas` directory).*
+| Tier | Endpoint | Auth | Returns |
+|---|---|---|---|
+| **Discovery** (free) | `/api/v1/nodes/{id}.json` | None | `node_id`, `title`, `domain`, `version`, `bluf`, `integrity_hash` + `paywall` routing |
+| **Discovery Index** (free) | `/api/v1/nodes/index.json` | None | Array of all discovery objects |
+| **Vault** (paid) | `/api/v1/vault/nodes/{id}.json` | L402 USDC or Skyfire Bearer | Full 13-key payload including `actionable_schema`, `deterministic_workflow`, `primary_citations` |
+
+The discovery tier is always free. It gives your agent enough context to plan which nodes it needs, verify hashes for freshness, and route payments. The vault tier is gated at **$0.01 USDC per unlock** via the L402 / x402 protocol on Base.
 
 ---
 
-## Access & Integration
+## The 13-Key Golden Schema
 
-Looking for integration code? Check out [examples/l402_agent_flow.py](https://github.com/Bidda-Ai/sovereign-intelligence-docs/blob/main/examples/l402_agent_flow.py) to see how agents handle the HTTP 402 payment challenge natively in Python.
-The Bidda Sovereign Intelligence Forest supports dual-path integration:
+Every vault node returns exactly 13 keys. See [schemas/golden-schema.md](schemas/golden-schema.md) for the full specification.
 
-### 1. Autonomous Agent Path (L402)
-Nodes are accessible programmatically via the L402 protocol. Agents equipped with Web3 wallets (e.g., Skyfire) can negotiate HTTP 402 Payment Required challenges, settle USDC micropayments natively, and instantly retrieve the verified schemas.
+| Key | Tier | Description |
+|---|---|---|
+| `node_id` | Discovery | Unique immutable identifier |
+| `title` | Discovery | Human-readable title |
+| `domain` | Discovery | Sovereign Pillar (e.g. `Cybersecurity`, `Banking & Global Finance`) |
+| `version` | Discovery | Semver — increments when the underlying regulation changes |
+| `bluf` | Discovery | Bottom Line Up Front — LLM-optimized 1-2 sentence summary |
+| `paywall` | Discovery | L402/Skyfire routing parameters |
+| `verification` | Vault | `authority`, `source_url`, `status`, `integrity_hash` |
+| `crosswalks` | Vault | Cross-framework mappings (NIST, ISO, etc.) |
+| `dependencies` | Vault | Prerequisite node IDs for compliance chains |
+| `actionable_schema` | Vault | Boolean logic, quantitative thresholds, required data types |
+| `deterministic_workflow` | Vault | Step-by-step machine-executable compliance path |
+| `primary_citations` | Vault | Official legal chapters and specifications |
+| `last_updated` | Both | ISO 8601 date of most recent regulatory amendment |
 
-### 2. Enterprise API Path (Coming Soon)
-For institutional deployment, Bidda offers dedicated API gateways with guaranteed uptime, automated SLA updates, and direct integration into Palantir, Databricks, and proprietary agentic architectures.
+---
 
-**[Visit Bidda.com to explore the Forest](https://bidda.com)**
+## Hash-Staleness Model (Regulatory Freshness)
+
+This is the mechanism that makes Bidda's recurring value model work — and the mechanism that keeps your agent compliant over time.
+
+**Every node carries an `integrity_hash` in its free discovery response.** This hash is a SHA-256 fingerprint of the node's current regulatory state. When the underlying regulation changes (new amendment, revised annex, superseded standard), Bidda updates the node and the hash changes.
+
+**Your agent's responsibility:**
+
+1. On first use: fetch the vault payload, store it alongside the `integrity_hash`.
+2. On every subsequent workflow run: re-fetch the free discovery endpoint and compare the live `integrity_hash` against your stored value.
+3. If the hash has changed: the node has been updated. The cached payload may now reflect non-compliant logic. Settle a new $0.01 payment to unlock the fresh vault payload.
+
+```python
+import requests
+
+cached = load_from_memory('iso-42001-risk')  # your stored {payload, integrity_hash}
+
+# Free discovery call — no payment needed
+live = requests.get('https://bidda.com/api/v1/nodes/iso-42001-risk.json').json()
+
+if cached['integrity_hash'] != live['integrity_hash']:
+    print(f"Node stale: {cached['version']} → {live['version']} — repurchase required")
+    # Trigger L402 settlement and re-fetch vault
+```
+
+The $0.01 is a **freshness fee**, not a content fee. You are paying for the guarantee that the logic reflects current law.
+
+---
+
+## 15 Sovereign Pillars
+
+| Pillar | Discovery Filter |
+|---|---|
+| AI Governance & Law | `/intelligence?category=ai-governance` |
+| Cybersecurity | `/intelligence?category=cybersecurity` |
+| Banking & Global Finance | `/intelligence?category=finance` |
+| Medical & Healthcare | `/intelligence?category=medical` |
+| Legal & IP Sovereignty | `/intelligence?category=legal` |
+| Logistics & Supply Chain | `/intelligence?category=logistics` |
+| Sustainability & ESG | `/intelligence?category=esg` |
+| Workplace | `/intelligence?category=workplace` |
+| Aviation, Defense & Quantum | `/intelligence?category=aviation` |
+| Crypto & Sovereign Finance | `/intelligence?category=crypto` |
+| Cloud & SaaS | `/intelligence?category=cloud` |
+| Industrial IoT & Energy | `/intelligence?category=industrial` |
+| Operations & CX | `/intelligence?category=operations` |
+| Sales, Marketing & PR | `/intelligence?category=sales` |
+| Food & Hospitality | `/intelligence?category=food` |
+| Creative, Content & Media IP | `/intelligence?category=media` |
+
+---
+
+## Quick Links
+
+- **Node Registry Index**: `https://bidda.com/api/v1/nodes/index.json`
+- **Intelligence Forest**: `https://bidda.com/intelligence`
+- **Developer Guide**: `https://bidda.com/developers`
+- **AI Crawler Manifest**: `https://bidda.com/llms.txt`
+- **Full Node Listing**: `https://bidda.com/llms-full.txt`
+
+---
+
+## Repository Contents
+
+```
+integration/api-access-beta.md   ← L402 integration guide + Skyfire
+schemas/golden-schema.md         ← Full 13-key schema specification
+examples/l402_agent_flow.py      ← Python reference implementation
+```
+
+---
+
+## License
+
+Apache 2.0. See [LICENSE](LICENSE).
