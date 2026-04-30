@@ -8,7 +8,7 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry — built for autonomous AI agents and compliance teams.
 
-**3,695 verified nodes. 31 active sovereign pillars. $0.01 per node. $0.49–$9.99 per pillar bundle.**
+**3,695 verified nodes. 31 active sovereign pillars. $0.01 per node. $0.49–$49.99 per pillar bundle.**
 
 Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. Zero inference. Zero hallucination. Every claim traceable to clause.
 
@@ -264,7 +264,7 @@ async function payAndFetch(privateKey) {
 | `/api/v1/nodes/index.json` | GET | None | Discovery index — all 3,695 nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node — **$0.01** |
-| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle — **$0.49–$9.99** |
+| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle — **$0.49–$49.99** |
 | `/mcp` | GET/POST | None | MCP server — free discovery for AI tools |
 | `/api/v1/openapi-skyfire.json` | GET | None | OpenAPI 3.0 specification |
 | `/.well-known/mcp.json` | GET | None | MCP discovery manifest |
@@ -327,18 +327,16 @@ Fixed price. An agent making 1,000 node calls pays $10 total. No subscription, n
 
 | Slug | Pillar | Nodes | Price |
 |------|--------|-------|-------|
-| `crypto` | Crypto & Sovereign Finance | 83 | $0.49 |
-| `food` | Food & Hospitality | 93 | $0.49 |
-| `media` | Creative, Content & Media IP | 83 | $0.49 |
-| `workplace` | Workplace | 159 | $0.49 |
-| `operations` | Operations & CX | 61 | $0.49 |
 | `workflow` | Workflow Automation | 25 | $0.49 |
-| `medical` | Medical & Healthcare | 114 | $0.99 |
-| `aviation` | Aviation, Defense & Quantum | 99 | $0.99 |
-| `esg` | Sustainability & ESG | 147 | $0.99 |
-| `sales` | Sales, Marketing & PR | 84 | $0.99 |
-| `logistics` | Logistics & Supply Chain | 89 | $0.99 |
-| `cloud` | Cloud & SaaS | 97 | $0.99 |
+| `crypto` | Crypto & Sovereign Finance | 83 | $0.99 |
+| `food` | Food & Hospitality | 93 | $0.99 |
+| `media` | Creative, Content & Media IP | 83 | $0.99 |
+| `operations` | Operations & CX | 61 | $0.99 |
+| `gaming` | Gaming & Gambling | 56 | $0.99 |
+| `biotech` | Biotech & Genomics | 43 | $0.99 |
+| `mining` | Mining & Natural Resources | 55 | $0.99 |
+| `space` | Space & Satellite Law | 39 | $0.99 |
+| `maritime` | Maritime & Shipping | 52 | $0.99 |
 | `industrial` | Industrial IoT & Energy | 65 | $0.99 |
 | `energy` | Energy & Utilities | 56 | $0.99 |
 | `construction` | Construction & Real Estate | 57 | $0.99 |
@@ -349,16 +347,18 @@ Fixed price. An agent making 1,000 node calls pays $10 total. No subscription, n
 | `competition` | Competition & Antitrust | 67 | $0.99 |
 | `automotive` | Automotive & Mobility | 64 | $0.99 |
 | `education` | Education & Research | 56 | $0.99 |
-| `gaming` | Gaming & Gambling | 56 | $0.99 |
-| `mining` | Mining & Natural Resources | 55 | $0.99 |
-| `biotech` | Biotech & Genomics | 43 | $0.99 |
-| `maritime` | Maritime & Shipping | 52 | $0.99 |
-| `space` | Space & Satellite Law | 39 | $0.99 |
-| `ai-governance` | AI Governance & Law | 324 | $1.99 |
-| `finance` | Banking & Global Finance | 351 | $1.99 |
-| `legal` | Legal & IP Sovereignty | 275 | $1.99 |
-| `cybersecurity` | Cybersecurity | 620 | $1.99 |
-| `_all` | Full Registry (all 3,695 nodes) | 3,695 | **$9.99** |
+| `sales` | Sales, Marketing & PR | 84 | $0.99 |
+| `aviation` | Aviation, Defense & Quantum | 99 | $1.49 |
+| `medical` | Medical & Healthcare | 114 | $1.49 |
+| `esg` | Sustainability & ESG | 147 | $1.49 |
+| `logistics` | Logistics & Supply Chain | 89 | $1.49 |
+| `cloud` | Cloud & SaaS | 97 | $1.49 |
+| `workplace` | Workplace | 159 | $1.99 |
+| `ai-governance` | AI Governance & Law | 324 | $2.49 |
+| `finance` | Banking & Global Finance | 351 | $2.99 |
+| `legal` | Legal & IP Sovereignty | 275 | $2.99 |
+| `cybersecurity` | Cybersecurity | 620 | $2.99 |
+| `_all` | Full Registry (all 3,695 nodes) | 3,695 | **$49.99** |
 
 ---
 
