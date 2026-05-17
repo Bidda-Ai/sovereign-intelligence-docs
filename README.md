@@ -8,11 +8,17 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry — built for autonomous AI agents and compliance teams.
 
-**3,680 verified nodes. 31 active sovereign pillars. $0.01 per node. $0.49–$2.99 per pillar bundle.**
+**5,585 verified nodes. 34 active sovereign pillars. $0.01 per node. $0.49–$2.99 per pillar bundle.**
 
 Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. Zero inference. Zero hallucination. Every claim traceable to clause.
 
 Every vault unlock returns a **compliance receipt** — a cryptographic record of what intelligence your agent consulted, when, and which version of the law was in force. Suitable for regulatory audit submissions.
+
+### Source-grounded by design
+
+New nodes are generated against the **verbatim official text** of the underlying instrument — fetched directly from regulator corpora (EUR-Lex, US eCFR, legislation.gov.uk, NIST OSCAL, MITRE ATT&CK/ATLAS, OFAC SDN). Every citation in a node is then forensically checked against that source text before the node enters the registry: structural references (Article N, Section N, Part N, CFR §, USC §) must appear verbatim in the source or the node is rejected.
+
+That's why a Bidda node citing "GDPR Article 33" is genuinely about Article 33 — not a model's confident-sounding paraphrase of what Article 33 *might* say.
 
 ---
 
@@ -135,6 +141,23 @@ Beyond the receipt, every Bidda source URL is fingerprinted weekly:
 
 This means you can verify not just what your agent was told, but that the underlying source document hasn't changed since Bidda last verified it.
 
+### Source coverage
+
+Nodes are derived from official regulator corpora. Current corpus stack:
+
+| Jurisdiction / Source | Coverage |
+|---|---|
+| **EUR-Lex (EU)** | 57,702 indexed instruments (Regulations, Directives, Decisions); 43,610 with English HTML available for verbatim grounding |
+| **US Code of Federal Regulations** | 1,453 Parts across Titles 12 (Banks), 14 (Aeronautics/FAA), 17 (Securities), 21 (Food and Drugs/FDA), 45 (Public Welfare/HIPAA) — 22,913 sections |
+| **UK Public General Acts** | Data Protection Act 2018, Financial Services and Markets Act 2000, Equality Act 2010, and selected statutory instruments |
+| **NIST OSCAL** | 2,643 controls across SP 800-53 rev4 + rev5, CSF v2.0, SP 800-171 rev3, SP 800-172 rev3, SP 800-218 (SSDF) |
+| **MITRE ATT&CK + ATLAS** | 1,510 adversarial-technique IDs across Enterprise, Mobile, ICS, Pre, and AI/ML |
+| **OFAC sanctions programs** | 74 active sanctions programs covering 18,959 designated entities across 145+ countries |
+| **International standards** | ISO/IEC, IEEE, IEC, Basel, IOSCO, FATF, IAIS, ICAO, IMO, IAEA, OECD, WIPO, WHO, FSB, BCBS, and others |
+| **National authorities** | 80+ jurisdictions: US (SEC/CFTC/FDA/FRB/OCC/FDIC/CFPB/EPA/DOJ/FTC/HHS/DOD/DOL/FERC), UK (FCA/PRA/ICO), Singapore (PDPC/MAS/IMDA), Korea (PIPC/FSC), Japan (PPC/FSA), Australia (APRA/AUSTRAC/OAIC), Canada (OPC/OSFI), South Africa (FSCA/SARB), India (MeitY/SEBI/RBI), Brazil (ANPD/BCB), UAE (SCA/DIFC), and many more |
+
+Coverage is updated continuously. The corpus indexes themselves are the asset that lets a Bidda node cite "21 CFR Part 11" and have it actually be 21 CFR Part 11.
+
 ### Version history
 
 Every amendment to a node increments its version (`1.0.3 → 1.0.4`). Version history is preserved — you can demonstrate which version of GDPR Article 33 your agent was operating under in Q1 2025 versus Q2 2026.
@@ -245,7 +268,7 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 3,680 nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 5,585 nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt — **$0.01** |
@@ -317,7 +340,7 @@ No account required. Send USDC directly on Base to the treasury wallet, pass the
 | Large | `workplace` | $1.99 |
 | Enterprise | `ai-governance` | $2.49 |
 | Flagship | `finance`, `legal`, `cybersecurity` | $2.99 |
-| Full Registry | `_all` (31 pillars, 3,680 nodes) | $49.99 |
+| Full Registry | `_all` (34 pillars, 5,585 nodes) | $49.99 |
 
 Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price = sum of individual pillars.
 
@@ -417,41 +440,44 @@ Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price 
 
 ---
 
-## 31 Active Sovereign Pillars
+## 34 Active Sovereign Pillars
 
 | Slug | Pillar | Nodes | Price |
 |---|---|---|---|
-| `cybersecurity` | Cybersecurity | 643 | $2.99 |
-| `finance` | Banking & Global Finance | 358 | $2.99 |
-| `ai-governance` | AI Governance & Law | 350 | $2.49 |
-| `legal` | Legal & IP Sovereignty | 277 | $2.99 |
-| `workplace` | Workplace | 159 | $1.99 |
-| `esg` | Sustainability & ESG | 149 | $1.49 |
-| `medical` | Medical & Healthcare | 115 | $1.49 |
-| `telecoms` | Telecoms & Digital Infrastructure | 78 | $0.99 |
-| `sales` | Sales, Marketing & PR | 79 | $0.99 |
-| `tax` | Tax & Transfer Pricing | 80 | $0.99 |
-| `logistics` | Logistics & Supply Chain | 88 | $1.49 |
-| `insurance` | Insurance & Risk | 90 | $0.99 |
-| `cloud` | Cloud & SaaS | 93 | $1.49 |
-| `food` | Food & Hospitality | 93 | $0.99 |
-| `aviation` | Aviation, Defense & Quantum | 101 | $1.49 |
-| `crypto` | Crypto & Sovereign Finance | 86 | $0.99 |
-| `media` | Creative, Content & Media IP | 83 | $0.99 |
-| `competition` | Competition & Antitrust | 67 | $0.99 |
-| `industrial` | Industrial IoT & Energy | 65 | $0.99 |
-| `automotive` | Automotive & Mobility | 64 | $0.99 |
-| `pharma` | Pharmaceuticals & Life Sciences | 64 | $0.99 |
-| `operations` | Operations & CX | 61 | $0.99 |
-| `gaming` | Gaming & Gambling | 56 | $0.99 |
-| `education` | Education & Research | 56 | $0.99 |
-| `energy` | Energy & Utilities | 56 | $0.99 |
-| `mining` | Mining & Natural Resources | 55 | $0.99 |
-| `maritime` | Maritime & Shipping | 52 | $0.99 |
-| `biotech` | Biotech & Genomics | 43 | $0.99 |
-| `space` | Space & Satellite Law | 39 | $0.99 |
-| `construction` | Construction & Real Estate | 58 | $0.99 |
-| `workflow` | Workflow Automation | 22 | $0.49 |
+| `cybersecurity` | Cybersecurity | 935 | $2.99 |
+| `ai-governance` | AI Governance & Law | 566 | $2.49 |
+| `finance` | Banking & Global Finance | 508 | $2.99 |
+| `legal` | Legal & IP Sovereignty | 434 | $2.99 |
+| `esg` | Sustainability & ESG | 260 | $1.49 |
+| `workplace` | Workplace | 206 | $1.99 |
+| `medical` | Medical & Healthcare | 182 | $1.49 |
+| `competition` | Competition & Antitrust | 116 | $0.99 |
+| `aviation` | Aviation, Defense & Quantum | 113 | $1.49 |
+| `crypto` | Crypto & Sovereign Finance | 110 | $0.99 |
+| `food` | Food & Hospitality | 108 | $0.99 |
+| `insurance` | Insurance & Risk | 108 | $0.99 |
+| `gaming` | Gaming & Gambling | 105 | $0.99 |
+| `tax` | Tax & Transfer Pricing | 104 | $0.99 |
+| `education` | Education & Research | 102 | $0.99 |
+| `biotech` | Biotech & Genomics | 102 | $0.99 |
+| `logistics` | Logistics & Supply Chain | 100 | $1.49 |
+| `industrial` | Industrial IoT & Energy | 100 | $0.99 |
+| `space` | Space & Satellite Law | 98 | $0.99 |
+| `cloud` | Cloud & SaaS | 98 | $1.49 |
+| `telecoms` | Telecoms & Digital Infrastructure | 96 | $0.99 |
+| `maritime` | Maritime & Shipping | 95 | $0.99 |
+| `pharma` | Pharmaceuticals & Life Sciences | 95 | $0.99 |
+| `sales` | Sales, Marketing & PR | 94 | $0.99 |
+| `mining` | Mining & Natural Resources | 94 | $0.99 |
+| `operations` | Operations & CX | 94 | $0.99 |
+| `energy` | Energy & Utilities | 94 | $0.99 |
+| `construction` | Construction & Real Estate | 93 | $0.99 |
+| `automotive` | Automotive & Mobility | 92 | $0.99 |
+| `media` | Creative, Content & Media IP | 90 | $0.99 |
+| `workflow` | Workflow Automation | 87 | $0.49 |
+| `immigration` | Immigration & Border Control | 56 | $0.99 |
+| `water` | Water & Environmental Resources | 35 | $0.99 |
+| `agriculture` | Agriculture & Agritech | 15 | $0.49 |
 
 ---
 
