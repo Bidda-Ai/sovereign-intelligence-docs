@@ -2,7 +2,7 @@
 
 Bidda nodes are served through a live two-tier API. The discovery tier is always free. The vault tier requires a $0.01 USDC micropayment — settled via Skyfire (primary path for AI agents), L402 / USDC on Base (Web3 path), or Direct Base USDC (no account required).
 
-Registry: **2,408 verified nodes across 29 sovereign pillars.**
+Registry: **7,243 verified nodes across 34 sovereign pillars.**
 
 ---
 
@@ -11,7 +11,7 @@ Registry: **2,408 verified nodes across 29 sovereign pillars.**
 Use the discovery tier for agent planning, node listing, and freshness checks.
 
 ```bash
-# List all 2,408 nodes
+# List all 7,243 nodes
 curl https://bidda.com/api/v1/nodes/index.json
 
 # Fetch a single node's discovery metadata
@@ -54,11 +54,11 @@ The simplest path for any platform integrated with [Skyfire](https://app.skyfire
 curl https://bidda.com/api/v1/vault/nodes/iso-42001-risk-assess.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full pillar bundle — $1.99 (AI Governance)
+# Full pillar bundle — $2.49 (AI Governance)
 curl https://bidda.com/api/v1/vault/pillar/ai-governance.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full registry — $9.99
+# Full registry — $49.99
 curl https://bidda.com/api/v1/vault/pillar/_all.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 ```
@@ -177,20 +177,20 @@ The worker verifies the transfer on-chain and records the hash in a replay-preve
 Unlock an entire regulatory domain in one call — more cost-effective at scale:
 
 ```bash
-# AI Governance & Law — $1.99 (139 nodes)
+# AI Governance & Law — $2.49 (566 nodes)
 curl https://bidda.com/api/v1/vault/pillar/ai-governance.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Cybersecurity — $1.99 (281 nodes)
+# Cybersecurity — $2.99 (1,947 nodes)
 curl https://bidda.com/api/v1/vault/pillar/cybersecurity.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full registry — $9.99 (2,408 nodes)
+# Full registry — $49.99 (7,243 nodes)
 curl https://bidda.com/api/v1/vault/pillar/_all.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 ```
 
-See the [pricing table](../README.md#pricing) for all 29 pillar slugs and prices.
+See the [pricing table](../README.md#pricing) for all 34 pillar slugs and prices.
 
 ---
 

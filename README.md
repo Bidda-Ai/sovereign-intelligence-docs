@@ -8,7 +8,7 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry — built for autonomous AI agents and compliance teams.
 
-**5,585 verified nodes. 34 active sovereign pillars. $0.01 per node. $0.49–$2.99 per pillar bundle.**
+**7,243 verified nodes. 34 active sovereign pillars. $0.01 per node. $0.49–$2.99 per pillar bundle.**
 
 Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. Zero inference. Zero hallucination. Every claim traceable to clause.
 
@@ -268,7 +268,7 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 5,585 nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 7,243 nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt — **$0.01** |
@@ -340,7 +340,7 @@ No account required. Send USDC directly on Base to the treasury wallet, pass the
 | Large | `workplace` | $1.99 |
 | Enterprise | `ai-governance` | $2.49 |
 | Flagship | `finance`, `legal`, `cybersecurity` | $2.99 |
-| Full Registry | `_all` (34 pillars, 5,585 nodes) | $49.99 |
+| Full Registry | `_all` (34 pillars, 7,243 nodes) | $49.99 |
 
 Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price = sum of individual pillars.
 
@@ -444,40 +444,40 @@ Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price 
 
 | Slug | Pillar | Nodes | Price |
 |---|---|---|---|
-| `cybersecurity` | Cybersecurity | 935 | $2.99 |
+| `cybersecurity` | Cybersecurity | 1,947 | $2.99 |
+| `legal` | Legal & IP Sovereignty | 697 | $2.99 |
+| `finance` | Banking & Global Finance | 581 | $2.99 |
 | `ai-governance` | AI Governance & Law | 566 | $2.49 |
-| `finance` | Banking & Global Finance | 508 | $2.99 |
-| `legal` | Legal & IP Sovereignty | 434 | $2.99 |
-| `esg` | Sustainability & ESG | 260 | $1.49 |
-| `workplace` | Workplace | 206 | $1.99 |
-| `medical` | Medical & Healthcare | 182 | $1.49 |
+| `medical` | Medical & Healthcare | 325 | $1.49 |
+| `esg` | Sustainability & ESG | 286 | $1.49 |
+| `workplace` | Workplace | 281 | $1.99 |
+| `aviation` | Aviation, Defense & Quantum | 119 | $1.49 |
 | `competition` | Competition & Antitrust | 116 | $0.99 |
-| `aviation` | Aviation, Defense & Quantum | 113 | $1.49 |
+| `food` | Food & Hospitality | 112 | $0.99 |
+| `logistics` | Logistics & Supply Chain | 111 | $1.49 |
 | `crypto` | Crypto & Sovereign Finance | 110 | $0.99 |
-| `food` | Food & Hospitality | 108 | $0.99 |
-| `insurance` | Insurance & Risk | 108 | $0.99 |
+| `insurance` | Insurance & Risk | 110 | $0.99 |
+| `tax` | Tax & Transfer Pricing | 106 | $0.99 |
 | `gaming` | Gaming & Gambling | 105 | $0.99 |
-| `tax` | Tax & Transfer Pricing | 104 | $0.99 |
+| `cloud` | Cloud & SaaS | 103 | $1.49 |
+| `biotech` | Biotech & Genomics | 103 | $0.99 |
 | `education` | Education & Research | 102 | $0.99 |
-| `biotech` | Biotech & Genomics | 102 | $0.99 |
-| `logistics` | Logistics & Supply Chain | 100 | $1.49 |
+| `maritime` | Maritime & Shipping | 101 | $0.99 |
+| `space` | Space & Satellite Law | 101 | $0.99 |
 | `industrial` | Industrial IoT & Energy | 100 | $0.99 |
-| `space` | Space & Satellite Law | 98 | $0.99 |
-| `cloud` | Cloud & SaaS | 98 | $1.49 |
-| `telecoms` | Telecoms & Digital Infrastructure | 96 | $0.99 |
-| `maritime` | Maritime & Shipping | 95 | $0.99 |
-| `pharma` | Pharmaceuticals & Life Sciences | 95 | $0.99 |
-| `sales` | Sales, Marketing & PR | 94 | $0.99 |
+| `energy` | Energy & Utilities | 100 | $0.99 |
+| `sales` | Sales, Marketing & PR | 99 | $0.99 |
+| `pharma` | Pharmaceuticals & Life Sciences | 99 | $0.99 |
+| `telecoms` | Telecoms & Digital Infrastructure | 98 | $0.99 |
+| `operations` | Operations & CX | 95 | $0.99 |
+| `construction` | Construction & Real Estate | 95 | $0.99 |
 | `mining` | Mining & Natural Resources | 94 | $0.99 |
-| `operations` | Operations & CX | 94 | $0.99 |
-| `energy` | Energy & Utilities | 94 | $0.99 |
-| `construction` | Construction & Real Estate | 93 | $0.99 |
 | `automotive` | Automotive & Mobility | 92 | $0.99 |
-| `media` | Creative, Content & Media IP | 90 | $0.99 |
-| `workflow` | Workflow Automation | 87 | $0.49 |
-| `immigration` | Immigration & Border Control | 56 | $0.99 |
-| `water` | Water & Environmental Resources | 35 | $0.99 |
-| `agriculture` | Agriculture & Agritech | 15 | $0.49 |
+| `media` | Creative, Content & Media IP | 91 | $0.99 |
+| `workflow` | Workflow Automation | 88 | $0.49 |
+| `immigration` | Immigration & Border Control | 57 | $0.99 |
+| `water` | Water & Environmental Resources | 37 | $0.99 |
+| `agriculture` | Agriculture & Agritech | 16 | $0.49 |
 
 ---
 
