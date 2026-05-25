@@ -8,7 +8,7 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry — built for autonomous AI agents and compliance teams.
 
-**7,243 verified nodes. 34 active sovereign pillars. $0.01 per node. $0.49–$2.99 per pillar bundle.**
+**7,243 verified nodes. 34 active sovereign pillars. $0.01 per node. $5–$49 per pillar bundle.**
 
 Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. Zero inference. Zero hallucination. Every claim traceable to clause.
 
@@ -272,8 +272,8 @@ async function payAndFetch(privateKey) {
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt — **$0.01** |
-| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle + receipt — **$0.49–$2.99** |
-| `/api/v1/vault/pillar/_all.json` | GET | Required | Full registry bundle + receipt — **$49.99** |
+| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle + receipt — **$5–$49** |
+| `/api/v1/vault/pillar/_all.json` | GET | Required | Full registry — **Enterprise subscription** |
 | `/api/v1/vault/bundle?pillars=X,Y,Z` | GET | Required | Multi-pillar bundle + receipt — **sum of pillar prices** |
 | `/api/v1/graph.json` | GET | None | Full dependency graph (all node relationships) |
 | `/api/v1/registry-health.json` | GET | None | Weekly source integrity status |
@@ -326,23 +326,35 @@ No account required. Send USDC directly on Base to the treasury wallet, pass the
 
 ## Pricing
 
-### Single Node
+### Pay-as-you-go — Single Node
 
-**$0.01 per node** — fixed, forever. Agents making 1,000 calls pay $10 total.
+**$0.01 per node** — fixed, forever. No account, no subscription. Agents making 1,000 calls pay $10 total. Three payment paths: Skyfire JWT, L402 / USDC on Base, or Direct Base USDC.
 
-### Pillar Bundles
+### Pillar Bundles (one-time frozen snapshot)
 
-| Tier | Slugs | Price |
+A pillar bundle is a point-in-time snapshot of every node in that domain. One-time bundles do not receive live regulatory updates — auto-update is a subscription feature.
+
+| Tier | Price | Pillars |
 |---|---|---|
-| Starter | `workflow` | $0.49 |
-| Standard | `crypto`, `food`, `media`, `operations`, `gaming`, `biotech`, `mining`, `space`, `maritime`, `industrial`, `energy`, `construction`, `telecoms`, `tax`, `pharma`, `insurance`, `competition`, `automotive`, `education`, `sales` | $0.99 |
-| Premium | `aviation`, `medical`, `esg`, `logistics`, `cloud` | $1.49 |
-| Large | `workplace` | $1.99 |
-| Enterprise | `ai-governance` | $2.49 |
-| Flagship | `finance`, `legal`, `cybersecurity` | $2.99 |
-| Full Registry | `_all` (34 pillars, 7,243 nodes) | $49.99 |
+| Workflow | $5 | `workflow` |
+| Standard | $9 | `crypto`, `food`, `media`, `operations`, `gaming`, `biotech`, `mining`, `space`, `maritime`, `industrial`, `energy`, `construction`, `telecoms`, `tax`, `pharma`, `insurance`, `competition`, `automotive`, `education`, `sales` |
+| Premium | $19 | `aviation`, `medical`, `esg`, `logistics`, `cloud` |
+| MITRE cross-cut | $29 | `mitre` (ATT&CK + ATLAS + D3FEND + CAPEC) |
+| Large | $34 | `workplace` |
+| Enterprise pillar | $39 | `ai-governance` |
+| Flagship | $49 | `finance`, `legal`, `cybersecurity` |
 
-Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price = sum of individual pillars.
+Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price = sum of individual pillar prices.
+
+### Subscriptions (billed in ZAR via Paystack; USD shown at the equivalent rate)
+
+| Plan | Price | Included |
+|---|---|---|
+| Starter | $49 / month | 100 node unlocks per month (single nodes) |
+| Professional | $199 / month | 1,000 nodes per month, pillar-bundle access, always-latest versions (auto-update on every call) |
+| Enterprise | $499 / month | Unlimited nodes — single, pillar, or full registry — plus API keys, audit log, and compliance attestation |
+
+Annual billing saves 20% on every tier. Full-registry access is an Enterprise feature. Volume contracts from $2,500/month — contact info@bidda.com.
 
 ---
 
@@ -442,42 +454,44 @@ Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price 
 
 ## 34 Active Sovereign Pillars
 
-| Slug | Pillar | Nodes | Price |
-|---|---|---|---|
-| `cybersecurity` | Cybersecurity | 1,947 | $2.99 |
-| `legal` | Legal & IP Sovereignty | 697 | $2.99 |
-| `finance` | Banking & Global Finance | 581 | $2.99 |
-| `ai-governance` | AI Governance & Law | 566 | $2.49 |
-| `medical` | Medical & Healthcare | 325 | $1.49 |
-| `esg` | Sustainability & ESG | 286 | $1.49 |
-| `workplace` | Workplace | 281 | $1.99 |
-| `aviation` | Aviation, Defense & Quantum | 119 | $1.49 |
-| `competition` | Competition & Antitrust | 116 | $0.99 |
-| `food` | Food & Hospitality | 112 | $0.99 |
-| `logistics` | Logistics & Supply Chain | 111 | $1.49 |
-| `crypto` | Crypto & Sovereign Finance | 110 | $0.99 |
-| `insurance` | Insurance & Risk | 110 | $0.99 |
-| `tax` | Tax & Transfer Pricing | 106 | $0.99 |
-| `gaming` | Gaming & Gambling | 105 | $0.99 |
-| `cloud` | Cloud & SaaS | 103 | $1.49 |
-| `biotech` | Biotech & Genomics | 103 | $0.99 |
-| `education` | Education & Research | 102 | $0.99 |
-| `maritime` | Maritime & Shipping | 101 | $0.99 |
-| `space` | Space & Satellite Law | 101 | $0.99 |
-| `industrial` | Industrial IoT & Energy | 100 | $0.99 |
-| `energy` | Energy & Utilities | 100 | $0.99 |
-| `sales` | Sales, Marketing & PR | 99 | $0.99 |
-| `pharma` | Pharmaceuticals & Life Sciences | 99 | $0.99 |
-| `telecoms` | Telecoms & Digital Infrastructure | 98 | $0.99 |
-| `operations` | Operations & CX | 95 | $0.99 |
-| `construction` | Construction & Real Estate | 95 | $0.99 |
-| `mining` | Mining & Natural Resources | 94 | $0.99 |
-| `automotive` | Automotive & Mobility | 92 | $0.99 |
-| `media` | Creative, Content & Media IP | 91 | $0.99 |
-| `workflow` | Workflow Automation | 88 | $0.49 |
-| `immigration` | Immigration & Border Control | 57 | $0.99 |
-| `water` | Water & Environmental Resources | 37 | $0.99 |
-| `agriculture` | Agriculture & Agritech | 16 | $0.49 |
+Node counts per pillar (live registry). Bundle pricing is by tier — see the [Pricing](#pricing) section.
+
+| Slug | Pillar | Nodes |
+|---|---|---|
+| `cybersecurity` | Cybersecurity | 1,947 |
+| `legal` | Legal & IP Sovereignty | 697 |
+| `finance` | Banking & Global Finance | 581 |
+| `ai-governance` | AI Governance & Law | 566 |
+| `medical` | Medical & Healthcare | 325 |
+| `esg` | Sustainability & ESG | 286 |
+| `workplace` | Workplace | 281 |
+| `aviation` | Aviation, Defense & Quantum | 119 |
+| `competition` | Competition & Antitrust | 116 |
+| `food` | Food & Hospitality | 112 |
+| `logistics` | Logistics & Supply Chain | 111 |
+| `crypto` | Crypto & Sovereign Finance | 110 |
+| `insurance` | Insurance & Risk | 110 |
+| `tax` | Tax & Transfer Pricing | 106 |
+| `gaming` | Gaming & Gambling | 105 |
+| `cloud` | Cloud & SaaS | 103 |
+| `biotech` | Biotech & Genomics | 103 |
+| `education` | Education & Research | 102 |
+| `maritime` | Maritime & Shipping | 101 |
+| `space` | Space & Satellite Law | 101 |
+| `industrial` | Industrial IoT & Energy | 100 |
+| `energy` | Energy & Utilities | 100 |
+| `sales` | Sales, Marketing & PR | 99 |
+| `pharma` | Pharmaceuticals & Life Sciences | 99 |
+| `telecoms` | Telecoms & Digital Infrastructure | 98 |
+| `operations` | Operations & CX | 95 |
+| `construction` | Construction & Real Estate | 95 |
+| `mining` | Mining & Natural Resources | 94 |
+| `automotive` | Automotive & Mobility | 92 |
+| `media` | Creative, Content & Media IP | 91 |
+| `workflow` | Workflow Automation | 88 |
+| `immigration` | Immigration & Border Control | 57 |
+| `water` | Water & Environmental Resources | 37 |
+| `agriculture` | Agriculture & Agritech | 16 |
 
 ---
 

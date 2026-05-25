@@ -54,13 +54,11 @@ The simplest path for any platform integrated with [Skyfire](https://app.skyfire
 curl https://bidda.com/api/v1/vault/nodes/iso-42001-risk-assess.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full pillar bundle — $2.49 (AI Governance)
+# Full pillar bundle — $39 (AI Governance)
 curl https://bidda.com/api/v1/vault/pillar/ai-governance.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full registry — $49.99
-curl https://bidda.com/api/v1/vault/pillar/_all.json \
-  -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
+# Full registry access (all pillars) is an Enterprise subscription feature — info@bidda.com
 ```
 
 Header: `skyfire-pay-id` (not Authorization). Accepted token types: `pay` and `kya-pay`.
@@ -177,17 +175,15 @@ The worker verifies the transfer on-chain and records the hash in a replay-preve
 Unlock an entire regulatory domain in one call — more cost-effective at scale:
 
 ```bash
-# AI Governance & Law — $2.49 (566 nodes)
+# AI Governance & Law — $39 (566 nodes)
 curl https://bidda.com/api/v1/vault/pillar/ai-governance.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Cybersecurity — $2.99 (1,947 nodes)
+# Cybersecurity — $49 (1,947 nodes)
 curl https://bidda.com/api/v1/vault/pillar/cybersecurity.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full registry — $49.99 (7,243 nodes)
-curl https://bidda.com/api/v1/vault/pillar/_all.json \
-  -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
+# Full registry (all 7,243 nodes) — Enterprise subscription only, info@bidda.com
 ```
 
 See the [pricing table](../README.md#pricing) for all 34 pillar slugs and prices.
