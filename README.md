@@ -8,7 +8,9 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry — built for autonomous AI agents and compliance teams.
 
-**7,243 verified nodes. 34 active sovereign pillars. $0.01 per node. $5–$49 per pillar bundle.**
+**9,500 verified nodes. 39 active sovereign pillars. $0.01 per node. $5–$49 per pillar bundle.**
+
+Bidda is a public signatory of the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) and publishes a [CISA Cybersecurity Performance Goals crosswalk](https://bidda.com/cisa/cpg-crosswalk) mapping the registry to CISA's CPGs.
 
 Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. Zero inference. Zero hallucination. Every claim traceable to clause.
 
@@ -86,6 +88,38 @@ curl "https://bidda.com/api/v1/vault/bundle?pillars=finance,crypto,legal" \
 
 ---
 
+## MCP — Model Context Protocol
+
+Bidda exposes a public MCP endpoint at `https://bidda.com/mcp`. Any MCP HTTP client (Claude.ai, Claude Desktop, Cursor and others) can point at the URL directly — no install, no API key. Discovery is free; full vault unlocks are billed per call.
+
+Nine tools available:
+
+| Tool | Purpose |
+|---|---|
+| `list_pillars` | Live pillar inventory with node counts |
+| `search_nodes` | Keyword search across the registry |
+| `get_node` | Fetch a node summary by ID |
+| `get_dependency_chain` | Walk prerequisite chains (1–4 hops) |
+| `get_crosswalk` | Cross-framework mapping dimensions for a node |
+| `get_latest_changes` | Regulatory change feed (optionally filtered by pillar) |
+| `get_jurisdiction_bundle` | All nodes that apply in one jurisdiction |
+| `get_mitre_mapping` | MITRE technique → Bidda node + control crosswalks (6 frameworks) |
+| `check_action_compliance` | Pre-flight runtime check for an intended agent action |
+
+Open `https://bidda.com/mcp` in a browser to inspect the live server manifest (pretty-printed JSON with all tool definitions).
+
+For CI workflows, the same scoring logic is available as a REST `/scan` endpoint:
+
+```bash
+curl -X POST https://bidda.com/scan \
+  -H "Content-Type: application/json" \
+  -d '{"content":"<your code or diff>","jurisdiction":"eu","limit":10}'
+```
+
+Returns a ranked list of compliance nodes that may apply, plus a `risk_level` indicator (`LOW | MODERATE | HIGH | NONE`). No auth required.
+
+---
+
 ## Compliance Receipts & Audit Trail
 
 Every vault unlock — single node, pillar bundle, or multi-pillar bundle — returns a `_receipt` block appended to the JSON response. This is your audit record.
@@ -133,10 +167,10 @@ Regulators increasingly require organisations to document what AI systems were a
 
 ### Source integrity chain
 
-Beyond the receipt, every Bidda source URL is fingerprinted weekly:
+Beyond the receipt, every Bidda source URL is fingerprinted on a regular cadence:
 - **TLS SPKI hash** — detects certificate substitution and DNS hijacking
 - **SHA-256 content hash** — detects silent regulatory content changes
-- Committed to git — every weekly check creates a new commit, forming a Merkle-anchored audit trail
+- Tamper-evident commit chain — every check creates a new signed commit, forming a Merkle-anchored audit trail
 - Public endpoint: `GET https://bidda.com/api/v1/registry-health.json`
 
 This means you can verify not just what your agent was told, but that the underlying source document hasn't changed since Bidda last verified it.
@@ -268,7 +302,7 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 7,243 nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 9,500 nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt — **$0.01** |
@@ -452,46 +486,27 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
 
 ---
 
-## 34 Active Sovereign Pillars
+## 39 Active Sovereign Pillars
 
-Node counts per pillar (live registry). Bundle pricing is by tier — see the [Pricing](#pricing) section.
+The registry spans 39 sovereign pillars. Live per-pillar counts shift as new nodes are accepted — call `list_pillars()` on the MCP endpoint or `GET https://bidda.com/api/v1/nodes/index.json` and aggregate by `domain` for the current breakdown.
 
-| Slug | Pillar | Nodes |
+Approximate weighting (top pillars):
+
+| Slug | Pillar | Approx. nodes |
 |---|---|---|
-| `cybersecurity` | Cybersecurity | 1,947 |
-| `legal` | Legal & IP Sovereignty | 697 |
-| `finance` | Banking & Global Finance | 581 |
-| `ai-governance` | AI Governance & Law | 566 |
-| `medical` | Medical & Healthcare | 325 |
-| `esg` | Sustainability & ESG | 286 |
-| `workplace` | Workplace | 281 |
-| `aviation` | Aviation, Defense & Quantum | 119 |
-| `competition` | Competition & Antitrust | 116 |
-| `food` | Food & Hospitality | 112 |
-| `logistics` | Logistics & Supply Chain | 111 |
-| `crypto` | Crypto & Sovereign Finance | 110 |
-| `insurance` | Insurance & Risk | 110 |
-| `tax` | Tax & Transfer Pricing | 106 |
-| `gaming` | Gaming & Gambling | 105 |
-| `cloud` | Cloud & SaaS | 103 |
-| `biotech` | Biotech & Genomics | 103 |
-| `education` | Education & Research | 102 |
-| `maritime` | Maritime & Shipping | 101 |
-| `space` | Space & Satellite Law | 101 |
-| `industrial` | Industrial IoT & Energy | 100 |
-| `energy` | Energy & Utilities | 100 |
-| `sales` | Sales, Marketing & PR | 99 |
-| `pharma` | Pharmaceuticals & Life Sciences | 99 |
-| `telecoms` | Telecoms & Digital Infrastructure | 98 |
-| `operations` | Operations & CX | 95 |
-| `construction` | Construction & Real Estate | 95 |
-| `mining` | Mining & Natural Resources | 94 |
-| `automotive` | Automotive & Mobility | 92 |
-| `media` | Creative, Content & Media IP | 91 |
-| `workflow` | Workflow Automation | 88 |
-| `immigration` | Immigration & Border Control | 57 |
-| `water` | Water & Environmental Resources | 37 |
-| `agriculture` | Agriculture & Agritech | 16 |
+| `cybersecurity` | Cybersecurity | ~1,900 |
+| `legal` | Legal & IP Sovereignty | ~700 |
+| `finance` | Banking & Global Finance | ~580 |
+| `ai-governance` | AI Governance & Law | ~570 |
+| `medical` | Medical & Healthcare | ~325 |
+| `esg` | Sustainability & ESG | ~285 |
+| `workplace` | Workplace | ~280 |
+| `aviation` | Aviation, Defense & Quantum | ~120 |
+| `+ 31 more pillars` | _(competition, food, logistics, crypto, insurance, tax, gaming, cloud, biotech, education, maritime, space, industrial, energy, sales, pharma, telecoms, operations, construction, mining, automotive, media, workflow, immigration, water, agriculture, MITRE cross-cut and others)_ | — |
+
+Plus a MITRE cross-cut layer across 6 frameworks (ATT&CK Enterprise, ATT&CK Mobile, ATT&CK ICS, D3FEND, ATLAS and CAPEC) — query via `get_mitre_mapping(technique_id)` on the MCP endpoint.
+
+Bundle pricing is by tier — see the [Pricing](#pricing) section.
 
 ---
 
@@ -524,7 +539,18 @@ The hash check eliminates the risk of executing against an outdated legal framew
 curl https://bidda.com/api/v1/registry-health.json
 ```
 
-Returns: node count, sources tracked, change count for the last 7 days, next check schedule, and source integrity summary. Updated every Monday at 02:00 UTC by the source watcher.
+Returns: node count, sources tracked, change count for the last 7 days, next check schedule, and source integrity summary. Refreshed on a regular cadence by the source-integrity watcher.
+
+---
+
+## CISA Programs
+
+Bidda has publicly attested to the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) — the seven public goals the U.S. Cybersecurity & Infrastructure Security Agency asks software manufacturers to commit to.
+
+- **Pledge attestation:** [bidda.com/cisa/secure-by-design](https://bidda.com/cisa/secure-by-design)
+- **CPG crosswalk:** [bidda.com/cisa/cpg-crosswalk](https://bidda.com/cisa/cpg-crosswalk) — bidirectional mapping between Bidda compliance nodes and CISA's Cybersecurity Performance Goals
+- **Free tools catalogue:** [bidda.com/cisa/free](https://bidda.com/cisa/free) — no-cost capabilities Bidda offers federal, SLTT and critical-infrastructure defenders
+- **CISA hub:** [bidda.com/cisa](https://bidda.com/cisa)
 
 ---
 
@@ -533,9 +559,13 @@ Returns: node count, sources tracked, change count for the last 7 days, next che
 - Website: [bidda.com](https://bidda.com)
 - Intelligence Forest: [bidda.com/intelligence](https://bidda.com/intelligence)
 - Developer Portal: [bidda.com/developers](https://bidda.com/developers)
+- MCP server: [bidda.com/mcp](https://bidda.com/mcp) — 9 tools, no install, no API key
+- Verify a node: [bidda.com/verify](https://bidda.com/verify)
+- Methodology: [bidda.com/methodology](https://bidda.com/methodology)
 - Audit Trail Guide: [bidda.com/audit](https://bidda.com/audit)
 - Pricing: [bidda.com/pricing](https://bidda.com/pricing)
 - Registry Health: [bidda.com/api/v1/registry-health.json](https://bidda.com/api/v1/registry-health.json)
 - OpenAPI Spec: [bidda.com/api/v1/openapi-skyfire.json](https://bidda.com/api/v1/openapi-skyfire.json)
 - LLM Discovery: [bidda.com/llms.txt](https://bidda.com/llms.txt)
+- CISA programs: [bidda.com/cisa](https://bidda.com/cisa)
 - Contact: info@bidda.com
