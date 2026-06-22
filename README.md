@@ -1,4 +1,4 @@
-# Bidda Sovereign Intelligence — Developer Documentation
+# Bidda Sovereign Intelligence - Developer Documentation
 
 [![smithery badge](https://smithery.ai/badge/bidda-ai/bidda-compliance)](https://smithery.ai/servers/bidda-ai/bidda-compliance)
 [![CISA Secure by Design](https://img.shields.io/badge/CISA-Secure%20by%20Design%20Pledge-blue)](https://bidda.com/cisa/secure-by-design)
@@ -9,21 +9,21 @@
 
 ## What is Bidda?
 
-Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry — built for autonomous AI agents and compliance teams.
+Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry - built for autonomous AI agents and compliance teams.
 
-**9,500 verified nodes. 39 active sovereign pillars. $0.01 per node. $5–$49 per pillar bundle.**
+**9,762 verified nodes. 39 active sovereign pillars. $0.01 per node. $5-$49 per pillar bundle.**
 
 Bidda is a public signatory of the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) and publishes a [CISA Cybersecurity Performance Goals crosswalk](https://bidda.com/cisa/cpg-crosswalk) mapping the registry to CISA's CPGs.
 
-Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. Zero inference. Zero hallucination. Every claim traceable to clause.
+Each Bidda node is a machine-readable JSON object distilled from primary legal sources (legislation, ISO standards, NIST frameworks, ICAO regulations, etc.) into deterministic, citable compliance logic. No inference without a regulatory anchor. Every claim traces to a specific clause of primary law.
 
-Every vault unlock returns a **compliance receipt** — a cryptographic record of what intelligence your agent consulted, when, and which version of the law was in force. Suitable for regulatory audit submissions.
+Every vault unlock returns a **compliance receipt** - a cryptographic record of what intelligence your agent consulted, when, and which version of the law was in force. Suitable for regulatory audit submissions.
 
 ### Source-grounded by design
 
-New nodes are generated against the **verbatim official text** of the underlying instrument — fetched directly from regulator corpora (EUR-Lex, US eCFR, legislation.gov.uk, NIST OSCAL, MITRE ATT&CK/ATLAS, OFAC SDN). Every citation in a node is then forensically checked against that source text before the node enters the registry: structural references (Article N, Section N, Part N, CFR §, USC §) must appear verbatim in the source or the node is rejected.
+New nodes are generated against the **verbatim official text** of the underlying instrument - fetched directly from regulator corpora (EUR-Lex, US eCFR, legislation.gov.uk, NIST OSCAL, MITRE ATT&CK/ATLAS, OFAC SDN). Every citation in a node is then forensically checked against that source text before the node enters the registry: structural references (Article N, Section N, Part N, CFR §, USC §) must appear verbatim in the source or the node is rejected.
 
-That's why a Bidda node citing "GDPR Article 33" is genuinely about Article 33 — not a model's confident-sounding paraphrase of what Article 33 *might* say.
+That's why a Bidda node citing "GDPR Article 33" is genuinely about Article 33 - not a model's confident-sounding paraphrase of what Article 33 *might* say.
 
 ---
 
@@ -72,7 +72,7 @@ curl https://bidda.com/api/v1/nodes/index.json
 # Discover a single node (free)
 curl https://bidda.com/api/v1/nodes/nist-csf-2-0-govern.json
 
-# Unlock a node via Skyfire (AI agents — primary path)
+# Unlock a node via Skyfire (AI agents - primary path)
 curl https://bidda.com/api/v1/vault/nodes/nist-csf-2-0-govern.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
@@ -91,23 +91,35 @@ curl "https://bidda.com/api/v1/vault/bundle?pillars=finance,crypto,legal" \
 
 ---
 
-## MCP — Model Context Protocol
+## MCP - Model Context Protocol
 
-Bidda exposes a public MCP endpoint at `https://bidda.com/mcp`. Any MCP HTTP client (Claude.ai, Claude Desktop, Cursor and others) can point at the URL directly — no install, no API key. Discovery is free; full vault unlocks are billed per call.
+Bidda exposes a public MCP endpoint at `https://bidda.com/mcp`. Any MCP HTTP client (Claude.ai, Claude Desktop, Cursor and others) can point at the URL directly - no install, no API key. Discovery is free; full vault unlocks are billed per call.
 
-Nine tools available:
+Fourteen tools. The discovery and intelligence tools are free (no key). The four subscriber tools accept your Bidda API key (a free trial counts).
+
+### Free (no key required)
 
 | Tool | Purpose |
 |---|---|
 | `list_pillars` | Live pillar inventory with node counts |
 | `search_nodes` | Keyword search across the registry |
 | `get_node` | Fetch a node summary by ID |
-| `get_dependency_chain` | Walk prerequisite chains (1–4 hops) |
+| `get_dependency_chain` | Walk prerequisite chains (1 to 4 hops) |
 | `get_crosswalk` | Cross-framework mapping dimensions for a node |
 | `get_latest_changes` | Regulatory change feed (optionally filtered by pillar) |
 | `get_jurisdiction_bundle` | All nodes that apply in one jurisdiction |
-| `get_mitre_mapping` | MITRE technique → Bidda node + control crosswalks (6 frameworks) |
+| `get_mitre_mapping` | MITRE technique to Bidda node plus control crosswalks (6 frameworks) |
 | `check_action_compliance` | Pre-flight runtime check for an intended agent action |
+| `browse_topics` | Browse the registry by cross-cutting compliance topic across every pillar and jurisdiction |
+
+### Subscriber (pass your Bidda API key; a free trial counts)
+
+| Tool | Purpose |
+|---|---|
+| `compare_jurisdictions` | Compare how jurisdictions address one topic side by side, including where their numeric thresholds differ. Does not rank which is stricter. |
+| `create_attestation` | Create a signed, time-stamped record of which rules a person or agent relied on, with a public verify URL |
+| `point_in_time` | Signed record of which committed version of a rule was authoritative at a past date |
+| `watch_changes` | Subscribe to email or webhook alerts when a watched rule or pillar source changes |
 
 Open `https://bidda.com/mcp` in a browser to inspect the live server manifest (pretty-printed JSON with all tool definitions).
 
@@ -123,9 +135,29 @@ Returns a ranked list of compliance nodes that may apply, plus a `risk_level` in
 
 ---
 
+## Self-Serve Compliance Tools
+
+Five subscriber tools, available both as MCP tools (above) and as REST endpoints. Each accepts a Bidda API key via the `x-bidda-api-key` header and honours any active subscription, including a free trial. Public read paths are noted.
+
+| Tool | Endpoint | Page | Auth |
+|---|---|---|---|
+| Browse by Topic | `GET /api/v1/topics-index.json` | `/topics` | None (public) |
+| Compare Jurisdictions | `GET /api/v1/compare?topic=` | `/compare` | API key (trial counts) |
+| Signed Records | `POST` / `GET /api/v1/attest`, `GET /api/v1/attest/mine` | `/attest` | API key; public GET by record id |
+| Point-in-Time | `POST` / `GET /api/v1/pit` | `/attest` | API key |
+| Change Alerts | `POST` / `GET` / `PATCH` / `DELETE /api/v1/alerts` | `/alerts` | API key |
+
+- **Browse by Topic** groups the registry by cross-cutting compliance topic (for example data breach notification, or AI transparency) across every pillar and jurisdiction. The topic axis is additive; pillars and jurisdictions are untouched.
+- **Compare Jurisdictions** returns how different jurisdictions address one topic, including where the numeric thresholds differ (for example a breach-notification deadline of 72 hours versus 30 days). It never ranks which jurisdiction is stricter.
+- **Signed Records** issue an Ed25519-signed, time-stamped record of which rules a person or AI agent relied on for a decision, with a public verify URL anyone can check.
+- **Point-in-Time** returns a signed record of which committed version of a rule was authoritative at a past date, anchored to the public history chain at `/api/v1/history/{id}.json`.
+- **Change Alerts** send an email or webhook when a watched rule or pillar source changes, evaluated by a daily sweep over the public change feed at `/api/v1/changes.json`.
+
+---
+
 ## Compliance Receipts & Audit Trail
 
-Every vault unlock — single node, pillar bundle, or multi-pillar bundle — returns a `_receipt` block appended to the JSON response. This is your audit record.
+Every vault unlock - single node, pillar bundle, or multi-pillar bundle - returns a `_receipt` block appended to the JSON response. This is your audit record.
 
 ### Receipt structure
 
@@ -150,12 +182,12 @@ Every vault unlock — single node, pillar bundle, or multi-pillar bundle — re
 | Field | What it establishes |
 |---|---|
 | `node_id` | Which regulation your agent consulted |
-| `version` | Which version of that regulation (laws change — the version matters) |
-| `integrity_hash` | The content was not tampered with — matches the signed registry hash |
+| `version` | Which version of that regulation (laws change - the version matters) |
+| `integrity_hash` | The content was not tampered with - matches the signed registry hash |
 | `accessed_at` | Exact ISO 8601 timestamp of the consultation |
-| `txid` | On-chain payment proof — immutable record on the Base blockchain |
+| `txid` | On-chain payment proof - immutable record on the Base blockchain |
 | `amount_usd` | Confirms a real transaction occurred |
-| `statement` | Human-readable audit string — paste directly into audit documentation |
+| `statement` | Human-readable audit string - paste directly into audit documentation |
 
 ### Why this matters for compliance teams
 
@@ -171,9 +203,9 @@ Regulators increasingly require organisations to document what AI systems were a
 ### Source integrity chain
 
 Beyond the receipt, every Bidda source URL is fingerprinted on a regular cadence:
-- **TLS SPKI hash** — detects certificate substitution and DNS hijacking
-- **SHA-256 content hash** — detects silent regulatory content changes
-- Tamper-evident commit chain — every check creates a new signed commit, forming a Merkle-anchored audit trail
+- **TLS SPKI hash** - detects certificate substitution and DNS hijacking
+- **SHA-256 content hash** - detects silent regulatory content changes
+- Tamper-evident commit chain - every check creates a new signed commit, forming a Merkle-anchored audit trail
 - Public endpoint: `GET https://bidda.com/api/v1/registry-health.json`
 
 This means you can verify not just what your agent was told, but that the underlying source document hasn't changed since Bidda last verified it.
@@ -185,7 +217,7 @@ Nodes are derived from official regulator corpora. Current corpus stack:
 | Jurisdiction / Source | Coverage |
 |---|---|
 | **EUR-Lex (EU)** | 57,702 indexed instruments (Regulations, Directives, Decisions); 43,610 with English HTML available for verbatim grounding |
-| **US Code of Federal Regulations** | 1,453 Parts across Titles 12 (Banks), 14 (Aeronautics/FAA), 17 (Securities), 21 (Food and Drugs/FDA), 45 (Public Welfare/HIPAA) — 22,913 sections |
+| **US Code of Federal Regulations** | 1,453 Parts across Titles 12 (Banks), 14 (Aeronautics/FAA), 17 (Securities), 21 (Food and Drugs/FDA), 45 (Public Welfare/HIPAA) - 22,913 sections |
 | **UK Public General Acts** | Data Protection Act 2018, Financial Services and Markets Act 2000, Equality Act 2010, and selected statutory instruments |
 | **NIST OSCAL** | 2,643 controls across SP 800-53 rev4 + rev5, CSF v2.0, SP 800-171 rev3, SP 800-172 rev3, SP 800-218 (SSDF) |
 | **MITRE ATT&CK + ATLAS** | 1,510 adversarial-technique IDs across Enterprise, Mobile, ICS, Pre, and AI/ML |
@@ -197,7 +229,7 @@ Coverage is updated continuously. The corpus indexes themselves are the asset th
 
 ### Version history
 
-Every amendment to a node increments its version (`1.0.3 → 1.0.4`). Version history is preserved — you can demonstrate which version of GDPR Article 33 your agent was operating under in Q1 2025 versus Q2 2026.
+Every amendment to a node increments its version (`1.0.3 → 1.0.4`). Version history is preserved - you can demonstrate which version of GDPR Article 33 your agent was operating under in Q1 2025 versus Q2 2026.
 
 **Enterprise:** Multi-node chain attestation, signed PDF export, and W3C Verifiable Credential export are available on the Enterprise plan. Contact info@bidda.com.
 
@@ -265,7 +297,7 @@ async function runComplianceCheck(nodeId, skyfireToken) {
 }
 ```
 
-### Direct USDC Payment — Path C (ethers.js)
+### Direct USDC Payment - Path C (ethers.js)
 
 ```javascript
 import { ethers } from 'ethers';
@@ -288,13 +320,13 @@ async function payAndFetch(privateKey) {
   const tx = await usdc.transfer(destination, amountUnits);
   const chainReceipt = await tx.wait();
 
-  // 3. Fetch node with tx hash — Bidda injects compliance receipt
+  // 3. Fetch node with tx hash - Bidda injects compliance receipt
   const res = await fetch(`https://bidda.com/api/v1/vault/nodes/${NODE_ID}.json`, {
     headers: { 'x-base-tx-hash': chainReceipt.hash }
   });
   const node = await res.json();
 
-  // node._receipt.txid === chainReceipt.hash — same proof, two places
+  // node._receipt.txid === chainReceipt.hash - same proof, two places
   return node;
 }
 ```
@@ -305,14 +337,21 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index — all 9,500 nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 9,762 nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
-| `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt — **$0.01** |
-| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle + receipt — **$5–$49** |
-| `/api/v1/vault/pillar/_all.json` | GET | Required | Full registry — **Enterprise subscription** |
-| `/api/v1/vault/bundle?pillars=X,Y,Z` | GET | Required | Multi-pillar bundle + receipt — **sum of pillar prices** |
+| `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt - **$0.01** |
+| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle + receipt - **$5-$49** |
+| `/api/v1/vault/pillar/_all.json` | GET | Required | Full registry - **Enterprise subscription** |
+| `/api/v1/vault/bundle?pillars=X,Y,Z` | GET | Required | Multi-pillar bundle + receipt - **sum of pillar prices** |
 | `/api/v1/graph.json` | GET | None | Full dependency graph (all node relationships) |
+| `/api/v1/topics-index.json` | GET | None | Cross-cutting topic facet index (Browse by Topic) |
+| `/api/v1/changes.json` | GET | None | Recent source-change feed |
+| `/api/v1/history/{nodeId}.json` | GET | None | Per-node committed version history |
+| `/api/v1/compare?topic=X` | GET | API key | Jurisdiction comparison for a topic |
+| `/api/v1/attest` | POST / GET | API key (public GET by id) | Signed decision records |
+| `/api/v1/pit` | POST / GET | API key | Point-in-time signed version record |
+| `/api/v1/alerts` | GET / POST / PATCH / DELETE | API key | Source-change alert subscriptions |
 | `/api/v1/registry-health.json` | GET | None | Weekly source integrity status |
 | `/api/v1/openapi-skyfire.json` | GET | None | OpenAPI 3.0 specification |
 | `/.well-known/ai-plugin.json` | GET | None | AI plugin manifest (ChatGPT/Copilot compatible) |
@@ -326,7 +365,7 @@ async function payAndFetch(privateKey) {
 
 Three payment paths on vault endpoints:
 
-### Path A — Skyfire `pay+jwt` (primary for AI agents)
+### Path A - Skyfire `pay+jwt` (primary for AI agents)
 
 ```
 skyfire-pay-id: <pay+jwt token string>
@@ -334,7 +373,7 @@ skyfire-pay-id: <pay+jwt token string>
 
 Get a token at [app.skyfire.xyz](https://app.skyfire.xyz). **Best for:** autonomous AI agents, enterprise integrations.
 
-### Path B — L402 / USDC on Base
+### Path B - L402 / USDC on Base
 
 ```
 Authorization: L402 web3:MACAROON:0xTX_HASH
@@ -342,7 +381,7 @@ Authorization: L402 web3:MACAROON:0xTX_HASH
 
 Send $0.01 USDC on Base, include the tx hash. **Best for:** Web3 wallets (MetaMask, Coinbase Wallet).
 
-### Path C — Direct Base USDC (simplest)
+### Path C - Direct Base USDC (simplest)
 
 ```
 x-base-tx-hash: 0xYOUR_TX_HASH
@@ -363,13 +402,13 @@ No account required. Send USDC directly on Base to the treasury wallet, pass the
 
 ## Pricing
 
-### Pay-as-you-go — Single Node
+### Pay-as-you-go - Single Node
 
-**$0.01 per node** — fixed, forever. No account, no subscription. Agents making 1,000 calls pay $10 total. Three payment paths: Skyfire JWT, L402 / USDC on Base, or Direct Base USDC.
+**$0.01 per node** - fixed, forever. No account, no subscription. Agents making 1,000 calls pay $10 total. Three payment paths: Skyfire JWT, L402 / USDC on Base, or Direct Base USDC.
 
 ### Pillar Bundles (one-time frozen snapshot)
 
-A pillar bundle is a point-in-time snapshot of every node in that domain. One-time bundles do not receive live regulatory updates — auto-update is a subscription feature.
+A pillar bundle is a point-in-time snapshot of every node in that domain. One-time bundles do not receive live regulatory updates - auto-update is a subscription feature.
 
 | Tier | Price | Pillars |
 |---|---|---|
@@ -381,7 +420,7 @@ A pillar bundle is a point-in-time snapshot of every node in that domain. One-ti
 | Enterprise pillar | $39 | `ai-governance` |
 | Flagship | $49 | `finance`, `legal`, `cybersecurity` |
 
-Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price = sum of individual pillar prices.
+Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` - price = sum of individual pillar prices.
 
 ### Subscriptions (billed in ZAR via Paystack; USD shown at the equivalent rate)
 
@@ -389,13 +428,13 @@ Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` — price 
 |---|---|---|
 | Starter | $49 / month | 100 node unlocks per month (single nodes) |
 | Professional | $199 / month | 1,000 nodes per month, pillar-bundle access, always-latest versions (auto-update on every call) |
-| Enterprise | $499 / month | Unlimited nodes — single, pillar, or full registry — plus API keys, audit log, and compliance attestation |
+| Enterprise | $499 / month | Unlimited nodes - single, pillar, or full registry - plus API keys, audit log, and compliance attestation |
 
-Annual billing saves 20% on every tier. Full-registry access is an Enterprise feature. Volume contracts from $2,500/month — contact info@bidda.com.
+Annual billing saves 20% on every tier. Full-registry access is an Enterprise feature. Volume contracts from $2,500/month - contact info@bidda.com.
 
 ---
 
-## 402 Payment Required — Response Format
+## 402 Payment Required - Response Format
 
 ```json
 {
@@ -440,7 +479,7 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
 ```json
 {
   "node_id": "eu-gdpr-article-33",
-  "title": "GDPR Article 33 — Personal Data Breach Notification",
+  "title": "GDPR Article 33 - Personal Data Breach Notification",
   "domain": "Cybersecurity",
   "version": "2.1.3",
   "last_updated": "2026-04-01",
@@ -470,7 +509,7 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
     { "step": 3, "logic": "If risk is not unlikely, notify the competent supervisory authority within 72 hours of becoming aware." }
   ],
   "primary_citations": [
-    "GDPR Article 33 — Notification of a personal data breach to the supervisory authority, Regulation (EU) 2016/679",
+    "GDPR Article 33 - Notification of a personal data breach to the supervisory authority, Regulation (EU) 2016/679",
     "EDPB Guidelines 9/2022 on personal data breach notification under GDPR"
   ],
   "_receipt": {
@@ -491,7 +530,7 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
 
 ## 39 Active Sovereign Pillars
 
-The registry spans 39 sovereign pillars. Live per-pillar counts shift as new nodes are accepted — call `list_pillars()` on the MCP endpoint or `GET https://bidda.com/api/v1/nodes/index.json` and aggregate by `domain` for the current breakdown.
+The registry spans 39 sovereign pillars. Live per-pillar counts shift as new nodes are accepted - call `list_pillars()` on the MCP endpoint or `GET https://bidda.com/api/v1/nodes/index.json` and aggregate by `domain` for the current breakdown.
 
 Approximate weighting (top pillars):
 
@@ -505,24 +544,24 @@ Approximate weighting (top pillars):
 | `esg` | Sustainability & ESG | ~285 |
 | `workplace` | Workplace | ~280 |
 | `aviation` | Aviation, Defense & Quantum | ~120 |
-| `+ 31 more pillars` | _(competition, food, logistics, crypto, insurance, tax, gaming, cloud, biotech, education, maritime, space, industrial, energy, sales, pharma, telecoms, operations, construction, mining, automotive, media, workflow, immigration, water, agriculture, MITRE cross-cut and others)_ | — |
+| `+ 31 more pillars` | _(competition, food, logistics, crypto, insurance, tax, gaming, cloud, biotech, education, maritime, space, industrial, energy, sales, pharma, telecoms, operations, construction, mining, automotive, media, workflow, immigration, water, agriculture, MITRE cross-cut and others)_ | - |
 
-Plus a MITRE cross-cut layer across 6 frameworks (ATT&CK Enterprise, ATT&CK Mobile, ATT&CK ICS, D3FEND, ATLAS and CAPEC) — query via `get_mitre_mapping(technique_id)` on the MCP endpoint.
+Plus a MITRE cross-cut layer across 6 frameworks (ATT&CK Enterprise, ATT&CK Mobile, ATT&CK ICS, D3FEND, ATLAS and CAPEC) - query via `get_mitre_mapping(technique_id)` on the MCP endpoint.
 
-Bundle pricing is by tier — see the [Pricing](#pricing) section.
+Bundle pricing is by tier - see the [Pricing](#pricing) section.
 
 ---
 
 ## Node Freshness & Drift Detection
 
 ```javascript
-// 1. Free discovery call — check the live hash
+// 1. Free discovery call - check the live hash
 const live = await fetch('https://bidda.com/api/v1/nodes/eu-gdpr-article-33.json');
 const { version, verification } = await live.json();
 
 // 2. Compare against your cached hash
 if (cached.integrity_hash !== verification.integrity_hash) {
-  // Regulation updated — re-unlock for $0.01 to get fresh content + new receipt
+  // Regulation updated - re-unlock for $0.01 to get fresh content + new receipt
   const fresh = await fetch('https://bidda.com/api/v1/vault/nodes/eu-gdpr-article-33.json', {
     headers: { 'skyfire-pay-id': skyfireToken }
   });
@@ -532,7 +571,7 @@ if (cached.integrity_hash !== verification.integrity_hash) {
 }
 ```
 
-The hash check eliminates the risk of executing against an outdated legal framework. When a regulation is amended, the node version increments and the hash changes — agents can detect this without paying.
+The hash check eliminates the risk of executing against an outdated legal framework. When a regulation is amended, the node version increments and the hash changes - agents can detect this without paying.
 
 ---
 
@@ -548,11 +587,11 @@ Returns: node count, sources tracked, change count for the last 7 days, next che
 
 ## CISA Programs
 
-Bidda has publicly attested to the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) — the seven public goals the U.S. Cybersecurity & Infrastructure Security Agency asks software manufacturers to commit to.
+Bidda has publicly attested to the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) - the seven public goals the U.S. Cybersecurity & Infrastructure Security Agency asks software manufacturers to commit to.
 
 - **Pledge attestation:** [bidda.com/cisa/secure-by-design](https://bidda.com/cisa/secure-by-design)
-- **CPG crosswalk:** [bidda.com/cisa/cpg-crosswalk](https://bidda.com/cisa/cpg-crosswalk) — bidirectional mapping between Bidda compliance nodes and CISA's Cybersecurity Performance Goals
-- **Free tools catalogue:** [bidda.com/cisa/free](https://bidda.com/cisa/free) — no-cost capabilities Bidda offers federal, SLTT and critical-infrastructure defenders
+- **CPG crosswalk:** [bidda.com/cisa/cpg-crosswalk](https://bidda.com/cisa/cpg-crosswalk) - bidirectional mapping between Bidda compliance nodes and CISA's Cybersecurity Performance Goals
+- **Free tools catalogue:** [bidda.com/cisa/free](https://bidda.com/cisa/free) - no-cost capabilities Bidda offers federal, SLTT and critical-infrastructure defenders
 - **CISA hub:** [bidda.com/cisa](https://bidda.com/cisa)
 
 ---
@@ -562,7 +601,7 @@ Bidda has publicly attested to the [CISA Secure by Design Pledge](https://bidda.
 - Website: [bidda.com](https://bidda.com)
 - Intelligence Forest: [bidda.com/intelligence](https://bidda.com/intelligence)
 - Developer Portal: [bidda.com/developers](https://bidda.com/developers)
-- MCP server: [bidda.com/mcp](https://bidda.com/mcp) — 9 tools, no install, no API key
+- MCP server: [bidda.com/mcp](https://bidda.com/mcp) - 14 tools, no install, no API key for discovery
 - Verify a node: [bidda.com/verify](https://bidda.com/verify)
 - Methodology: [bidda.com/methodology](https://bidda.com/methodology)
 - Audit Trail Guide: [bidda.com/audit](https://bidda.com/audit)
