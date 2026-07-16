@@ -1,8 +1,8 @@
 # The Bidda "Golden Schema" (13-Key Architecture)
 
-To guarantee deterministic execution and absolute compliance, every node within the Bidda Sovereign Intelligence Forest adheres to a strict, mathematically verifiable 13-key JSON structure. 
+To support deterministic execution and consistent compliance checks, every node within the Bidda Sovereign Intelligence Forest adheres to a strict, machine-verifiable 13-key JSON structure.
 
-This schema bridges the gap between natural language legal text and machine-readable boolean logic. It eliminates LLM hallucination risk by enforcing a standardized payload that enterprise agents can natively parse, execute, and verify.
+This schema bridges the gap between natural language legal text and machine-readable boolean logic. It is designed to reduce LLM hallucination risk by enforcing a standardized payload that enterprise agents can natively parse, execute, and verify.
 
 ## Schema Definition
 
@@ -38,7 +38,7 @@ The cryptographic proof of the node's authenticity and source origin.
 * `source_url`: Permalink to the raw, official source text.
 * `status`: Verification state (e.g., `VERIFIED`).
 * `timestamp`: ISO 8601 timestamp of the exact moment the hash was generated.
-* `integrity_hash`: A SHA-256 cryptographic hash of the node. Agents must compute the hash of the payload and compare it to this key to guarantee the logic has not suffered from AI drift or tampering.
+* `integrity_hash`: A SHA-256 cryptographic hash of the node. Agents can compute the hash of the payload and compare it to this key to confirm the logic has not been altered by drift or tampering.
 
 ### 9. `crosswalks` (Object)
 Maps the specific rule to equivalent international frameworks to ensure cross-departmental compliance.

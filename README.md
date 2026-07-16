@@ -11,7 +11,7 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry - built for autonomous AI agents and compliance teams.
 
-**9,762 verified nodes. 39 active sovereign pillars. $0.01 per node. $5-$49 per pillar bundle.**
+**10,065 verified nodes. 39 active sovereign pillars. $0.01 per node. Subscriptions from $49/month.**
 
 Bidda is a public signatory of the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) and publishes a [CISA Cybersecurity Performance Goals crosswalk](https://bidda.com/cisa/cpg-crosswalk) mapping the registry to CISA's CPGs.
 
@@ -79,14 +79,6 @@ curl https://bidda.com/api/v1/vault/nodes/nist-csf-2-0-govern.json \
 # Unlock a node via Direct Base USDC
 curl https://bidda.com/api/v1/vault/nodes/nist-csf-2-0-govern.json \
   -H "x-base-tx-hash: 0xYourBaseTxHash"
-
-# Unlock a full pillar bundle
-curl https://bidda.com/api/v1/vault/pillar/cybersecurity.json \
-  -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
-
-# Unlock multiple pillars in one call (sum pricing)
-curl "https://bidda.com/api/v1/vault/bundle?pillars=finance,crypto,legal" \
-  -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 ```
 
 ---
@@ -95,7 +87,7 @@ curl "https://bidda.com/api/v1/vault/bundle?pillars=finance,crypto,legal" \
 
 Bidda exposes a public MCP endpoint at `https://bidda.com/mcp`. Any MCP HTTP client (Claude.ai, Claude Desktop, Cursor and others) can point at the URL directly - no install, no API key. Discovery is free; full vault unlocks are billed per call.
 
-Fourteen tools. The discovery and intelligence tools are free (no key). The four subscriber tools accept your Bidda API key (a free trial counts).
+Twenty-five tools. The discovery and intelligence tools are free (no key). The subscriber tools accept your Bidda API key (a free trial counts).
 
 ### Free (no key required)
 
@@ -120,6 +112,17 @@ Fourteen tools. The discovery and intelligence tools are free (no key). The four
 | `create_attestation` | Create a signed, time-stamped record of which rules a person or agent relied on, with a public verify URL |
 | `point_in_time` | Signed record of which committed version of a rule was authoritative at a past date |
 | `watch_changes` | Subscribe to email or webhook alerts when a watched rule or pillar source changes |
+| `open_run` | Open a run ledger for a whole task or conversation. Returns a run_id. |
+| `record_run_entry` | Append one tamper-evident entry to an open run: the rules consulted, the decision, and the user input as text or a private hash |
+| `seal_run` | Seal a run into one signed run receipt covering every entry, with a public verify URL |
+| `get_run` | Fetch a run and its entries; a sealed run is publicly readable and reports whether its signature is valid |
+| `consult_node` | Fetch a full node and record a verified, hash-pinned entry in an open run in one call |
+| `get_audit_pack` | Export a sealed run as one auditor-ready evidence pack: the signed receipt, the entry chain, and an independent integrity self-check |
+| `drift_check` | Check whether a cached snapshot is still current: pass node ids and get fresh, drifted, or withdrawn per node |
+| `create_control_attestation` | Signed record mapping one of your internal controls to the Bidda obligations it addresses, with a public verify URL. An audit trail, not a determination of compliance. |
+| `gap_check` | Walk the public dependency graph from the nodes you cover to surface prerequisite obligations you may be missing |
+| `obligation_deltas` | Obligation-level feed of which primary sources changed or were withdrawn since a date, filterable by pillar or node |
+| `oscal_assessment_results` | Export a sealed governed run as a NIST OSCAL assessment-results document for GRC tooling |
 
 Open `https://bidda.com/mcp` in a browser to inspect the live server manifest (pretty-printed JSON with all tool definitions).
 
@@ -137,7 +140,7 @@ Returns a ranked list of compliance nodes that may apply, plus a `risk_level` in
 
 ## Self-Serve Compliance Tools
 
-Five subscriber tools, available both as MCP tools (above) and as REST endpoints. Each accepts a Bidda API key via the `x-bidda-api-key` header and honours any active subscription, including a free trial. Public read paths are noted.
+The core subscriber tools are available both as MCP tools (above) and as REST endpoints. Each accepts a Bidda API key via the `x-bidda-api-key` header and honours any active subscription, including a free trial. Public read paths are noted. The governed run-ledger, drift-check, control-attestation and OSCAL export tools are available via the MCP endpoint and the OpenAPI spec.
 
 | Tool | Endpoint | Page | Auth |
 |---|---|---|---|
@@ -157,7 +160,7 @@ Five subscriber tools, available both as MCP tools (above) and as REST endpoints
 
 ## Compliance Receipts & Audit Trail
 
-Every vault unlock - single node, pillar bundle, or multi-pillar bundle - returns a `_receipt` block appended to the JSON response. This is your audit record.
+Every vault unlock returns a `_receipt` block appended to the JSON response. This is your audit record.
 
 ### Receipt structure
 
@@ -337,13 +340,11 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 9,762 nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 10,065 nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt - **$0.01** |
-| `/api/v1/vault/pillar/{slug}.json` | GET | Required | Full pillar bundle + receipt - **$5-$49** |
 | `/api/v1/vault/pillar/_all.json` | GET | Required | Full registry - **Enterprise subscription** |
-| `/api/v1/vault/bundle?pillars=X,Y,Z` | GET | Required | Multi-pillar bundle + receipt - **sum of pillar prices** |
 | `/api/v1/graph.json` | GET | None | Full dependency graph (all node relationships) |
 | `/api/v1/topics-index.json` | GET | None | Cross-cutting topic facet index (Browse by Topic) |
 | `/api/v1/changes.json` | GET | None | Recent source-change feed |
@@ -354,6 +355,7 @@ async function payAndFetch(privateKey) {
 | `/api/v1/alerts` | GET / POST / PATCH / DELETE | API key | Source-change alert subscriptions |
 | `/api/v1/registry-health.json` | GET | None | Weekly source integrity status |
 | `/api/v1/openapi-skyfire.json` | GET | None | OpenAPI 3.0 specification |
+| `/api/v1/oscal/catalog.json` | GET | None | NIST OSCAL control catalog export |
 | `/.well-known/ai-plugin.json` | GET | None | AI plugin manifest (ChatGPT/Copilot compatible) |
 | `/.well-known/agent-card.json` | GET | None | A2A agent card |
 | `/llms.txt` | GET | None | Machine-readable registry summary for LLM crawlers |
@@ -387,7 +389,7 @@ Send $0.01 USDC on Base, include the tx hash. **Best for:** Web3 wallets (MetaMa
 x-base-tx-hash: 0xYOUR_TX_HASH
 ```
 
-No account required. Send USDC directly on Base to the treasury wallet, pass the tx hash. The worker verifies on-chain and blocks replay. **Best for:** headless agents, crypto-native teams.
+No account required. Send USDC directly on Base to the treasury wallet, pass the tx hash. Bidda verifies the payment on-chain and blocks replay. **Best for:** headless agents, crypto-native teams.
 
 **Agent flow:**
 ```
@@ -406,29 +408,17 @@ No account required. Send USDC directly on Base to the treasury wallet, pass the
 
 **$0.01 per node** - fixed, forever. No account, no subscription. Agents making 1,000 calls pay $10 total. Three payment paths: Skyfire JWT, L402 / USDC on Base, or Direct Base USDC.
 
-### Pillar Bundles (one-time frozen snapshot)
+### Bulk domain access (live, always current)
 
-A pillar bundle is a point-in-time snapshot of every node in that domain. One-time bundles do not receive live regulatory updates - auto-update is a subscription feature.
-
-| Tier | Price | Pillars |
-|---|---|---|
-| Workflow | $5 | `workflow` |
-| Standard | $9 | `crypto`, `food`, `media`, `operations`, `gaming`, `biotech`, `mining`, `space`, `maritime`, `industrial`, `energy`, `construction`, `telecoms`, `tax`, `pharma`, `insurance`, `competition`, `automotive`, `education`, `sales` |
-| Premium | $19 | `aviation`, `medical`, `esg`, `logistics`, `cloud` |
-| MITRE cross-cut | $29 | `mitre` (ATT&CK + ATLAS + D3FEND + CAPEC) |
-| Large | $34 | `workplace` |
-| Enterprise pillar | $39 | `ai-governance` |
-| Flagship | $49 | `finance`, `legal`, `cybersecurity` |
-
-Multi-pillar: `GET /api/v1/vault/bundle?pillars=finance,crypto,legal` - price = sum of individual pillar prices.
+Need every node in a domain? Pull them live at $0.01 each, always the current version - no frozen snapshots. List the discovery index, filter by `domain`, and unlock each node id. Subscribers can bulk-pull with a single API key.
 
 ### Subscriptions (billed in ZAR via Paystack; USD shown at the equivalent rate)
 
 | Plan | Price | Included |
 |---|---|---|
-| Starter | $49 / month | 100 node unlocks per month (single nodes) |
-| Professional | $199 / month | 1,000 nodes per month, pillar-bundle access, always-latest versions (auto-update on every call) |
-| Enterprise | $499 / month | Unlimited nodes - single, pillar, or full registry - plus API keys, audit log, and compliance attestation |
+| Starter | $49 / month | 100 node unlocks per month |
+| Professional | $199 / month | 1,000 nodes per month, multi-pillar access, always-latest versions (auto-update on every call) |
+| Enterprise | $499 / month | Unlimited nodes plus API keys, audit log, and compliance attestation |
 
 Annual billing saves 20% on every tier. Full-registry access is an Enterprise feature. Volume contracts from $2,500/month - contact info@bidda.com.
 
@@ -536,19 +526,19 @@ Approximate weighting (top pillars):
 
 | Slug | Pillar | Approx. nodes |
 |---|---|---|
-| `cybersecurity` | Cybersecurity | ~1,900 |
-| `legal` | Legal & IP Sovereignty | ~700 |
-| `finance` | Banking & Global Finance | ~580 |
-| `ai-governance` | AI Governance & Law | ~570 |
-| `medical` | Medical & Healthcare | ~325 |
-| `esg` | Sustainability & ESG | ~285 |
-| `workplace` | Workplace | ~280 |
-| `aviation` | Aviation, Defense & Quantum | ~120 |
-| `+ 31 more pillars` | _(competition, food, logistics, crypto, insurance, tax, gaming, cloud, biotech, education, maritime, space, industrial, energy, sales, pharma, telecoms, operations, construction, mining, automotive, media, workflow, immigration, water, agriculture, MITRE cross-cut and others)_ | - |
+| `cybersecurity` | Cybersecurity | ~2,800 |
+| `ai-governance` | AI Governance & Law | ~775 |
+| `legal` | Legal & IP Sovereignty | ~640 |
+| `finance` | Banking & Global Finance | ~600 |
+| `workplace` | Workplace | ~365 |
+| `medical` | Medical & Healthcare | ~350 |
+| `esg` | Sustainability & ESG | ~315 |
+| `privacy` | Data Protection & Privacy | ~305 |
+| `+ 31 more pillars` | _(financial-crime, competition, food, logistics, crypto, insurance, tax, gaming, cloud, biotech, education, maritime, space, industrial, energy, sales, pharma, telecoms, operations, construction, mining, automotive, media, workflow, immigration, water, agriculture, aviation, MITRE cross-cut and others)_ | - |
 
 Plus a MITRE cross-cut layer across 6 frameworks (ATT&CK Enterprise, ATT&CK Mobile, ATT&CK ICS, D3FEND, ATLAS and CAPEC) - query via `get_mitre_mapping(technique_id)` on the MCP endpoint.
 
-Bundle pricing is by tier - see the [Pricing](#pricing) section.
+Pricing is per-node ($0.01) or by monthly subscription - see the [Pricing](#pricing) section.
 
 ---
 
@@ -601,7 +591,7 @@ Bidda has publicly attested to the [CISA Secure by Design Pledge](https://bidda.
 - Website: [bidda.com](https://bidda.com)
 - Intelligence Forest: [bidda.com/intelligence](https://bidda.com/intelligence)
 - Developer Portal: [bidda.com/developers](https://bidda.com/developers)
-- MCP server: [bidda.com/mcp](https://bidda.com/mcp) - 14 tools, no install, no API key for discovery
+- MCP server: [bidda.com/mcp](https://bidda.com/mcp) - 25 tools, no install, no API key for discovery
 - Verify a node: [bidda.com/verify](https://bidda.com/verify)
 - Methodology: [bidda.com/methodology](https://bidda.com/methodology)
 - Audit Trail Guide: [bidda.com/audit](https://bidda.com/audit)

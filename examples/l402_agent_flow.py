@@ -15,7 +15,7 @@ TARGET_NODE_URL = "https://bidda.com/api/v1/vault/as9100-rev-d-qms"
 def fetch_bidda_node():
     print("[Agent] Initiating request to Sovereign Intelligence Forest...")
     
-    # STEP 1 — HIT THE VAULT ENDPOINT
+    # STEP 1 - HIT THE VAULT ENDPOINT
     initial_response = requests.get(TARGET_NODE_URL)
     
     if initial_response.status_code == 402:
@@ -23,7 +23,7 @@ def fetch_bidda_node():
         invoice_string = challenge_data.get("invoice")
         print(f"[Agent] HTTP 402 Payment Required. Received Invoice: {invoice_string[:15]}...")
         
-        # STEP 2 — SETTLE $0.01 USDC ON BASE
+        # STEP 2 - SETTLE $0.01 USDC ON BASE
         print("[Agent] Routing invoice to agentic wallet (e.g., Skyfire) for $0.01 USDC settlement on Base...")
         time.sleep(2) # Simulating network confirmation time
         
@@ -31,7 +31,7 @@ def fetch_bidda_node():
         signed_receipt_token = "mock_receipt_token_xyz123"
         print("[Agent] Payment confirmed. Receipt token generated.")
         
-        # STEP 3 — RETRY WITH BEARER TOKEN
+        # STEP 3 - RETRY WITH BEARER TOKEN
         print("[Agent] Retrying vault endpoint with L402 Authorization header...")
         headers = {
             "Authorization": f"L402 {signed_receipt_token}"

@@ -1,17 +1,17 @@
 # API Access & Payment Integration Guide
 
-Bidda nodes are served through a live two-tier API. The discovery tier is always free. The vault tier requires a $0.01 USDC micropayment — settled via Skyfire (primary path for AI agents), L402 / USDC on Base (Web3 path), or Direct Base USDC (no account required).
+Bidda nodes are served through a live two-tier API. The discovery tier is always free. The vault tier requires a $0.01 USDC micropayment - settled via Skyfire (primary path for AI agents), L402 / USDC on Base (Web3 path), or Direct Base USDC (no account required).
 
-Registry: **7,243 verified nodes across 34 sovereign pillars.**
+Registry: **10,065 verified nodes across 39 sovereign pillars.**
 
 ---
 
-## Discovery Tier (Free — No Auth)
+## Discovery Tier (Free - No Auth)
 
 Use the discovery tier for agent planning, node listing, and freshness checks.
 
 ```bash
-# List all 7,243 nodes
+# List all 10,065 nodes
 curl https://bidda.com/api/v1/nodes/index.json
 
 # Fetch a single node's discovery metadata
@@ -41,24 +41,21 @@ curl https://bidda.com/api/v1/nodes/iso-42001-risk-assess.json
 
 ---
 
-## Vault Tier — Three Payment Paths
+## Vault Tier - Three Payment Paths
 
 The vault tier returns the full 13-key payload including `actionable_schema`, `deterministic_workflow`, and `primary_citations`.
 
-### Path A — Skyfire `pay+jwt` (Primary for AI Agents)
+### Path A - Skyfire `pay+jwt` (Primary for AI Agents)
 
 The simplest path for any platform integrated with [Skyfire](https://app.skyfire.xyz). No on-chain transactions required.
 
 ```bash
-# Single node — $0.01
+# Single node - $0.01
 curl https://bidda.com/api/v1/vault/nodes/iso-42001-risk-assess.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full pillar bundle — $39 (AI Governance)
-curl https://bidda.com/api/v1/vault/pillar/ai-governance.json \
-  -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
-
-# Full registry access (all pillars) is an Enterprise subscription feature — info@bidda.com
+# Bulk-pull an entire domain live: iterate the pillar's node ids at $0.01 each, always current
+# Full registry access (all pillars) is an Enterprise subscription feature - info@bidda.com
 ```
 
 Header: `skyfire-pay-id` (not Authorization). Accepted token types: `pay` and `kya-pay`.
@@ -79,7 +76,7 @@ for step in node['deterministic_workflow']:
 
 ---
 
-### Path B — L402 / USDC on Base (Web3 / MetaMask)
+### Path B - L402 / USDC on Base (Web3 / MetaMask)
 
 Single-node endpoints only. Send $0.01 USDC on Base and include the tx hash.
 
@@ -90,7 +87,7 @@ curl https://bidda.com/api/v1/vault/nodes/iso-42001-risk-assess.json \
 
 ---
 
-### Path C — Direct Base USDC (No Account Required — LIVE)
+### Path C - Direct Base USDC (No Account Required - LIVE)
 
 Send USDC directly to the payment address on Base. No Skyfire account needed.
 
@@ -117,7 +114,7 @@ curl -i https://bidda.com/api/v1/vault/nodes/iso-42001-risk-assess.json
 }
 ```
 
-Always read `destination` and `amount_usd` from the 402 response — do not hardcode them.
+Always read `destination` and `amount_usd` from the 402 response - do not hardcode them.
 
 **Step 2: Send USDC on Base (Python / web3.py)**
 
@@ -166,27 +163,26 @@ node = requests.get(
 ).json()
 ```
 
-The worker verifies the transfer on-chain and records the hash in a replay-prevention store. Allow up to 30 seconds for block indexing before retrying on a `402` response.
+Bidda verifies the transfer on-chain and records the hash in a replay-prevention store. Allow up to 30 seconds for block indexing before retrying on a `402` response.
 
 ---
 
-## Pillar Bundles (Skyfire only)
+## Bulk Domain Access (live, always current)
 
-Unlock an entire regulatory domain in one call — more cost-effective at scale:
+Need every node in a regulatory domain? Pull them live at $0.01 each, always the current version - no frozen snapshots. List the domain with the discovery index, then unlock each node id:
 
 ```bash
-# AI Governance & Law — $39 (566 nodes)
-curl https://bidda.com/api/v1/vault/pillar/ai-governance.json \
+# 1. List discovery records, filter by domain client-side
+curl https://bidda.com/api/v1/nodes/index.json
+
+# 2. Unlock each node id in that domain at $0.01
+curl https://bidda.com/api/v1/vault/nodes/{node_id}.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Cybersecurity — $49 (1,947 nodes)
-curl https://bidda.com/api/v1/vault/pillar/cybersecurity.json \
-  -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
-
-# Full registry (all 7,243 nodes) — Enterprise subscription only, info@bidda.com
+# Full registry access (all 10,065 nodes) is an Enterprise subscription feature - info@bidda.com
 ```
 
-See the [pricing table](../README.md#pricing) for all 34 pillar slugs and prices.
+Subscribers can bulk-pull with a single API key. See the [pricing section](../README.md#pricing) for subscription tiers.
 
 ---
 
@@ -207,7 +203,7 @@ def is_node_stale(node_id: str, cached_hash: str) -> bool:
 cached = load_node_from_memory('iso-42001-risk-assess')
 
 if is_node_stale('iso-42001-risk-assess', cached['verification']['integrity_hash']):
-    # Regulation updated — repurchase for $0.01
+    # Regulation updated - repurchase for $0.01
     fresh_node = requests.get(
         'https://bidda.com/api/v1/vault/nodes/iso-42001-risk-assess.json',
         headers={'skyfire-pay-id': SKYFIRE_TOKEN}
