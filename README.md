@@ -11,7 +11,7 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry - built for autonomous AI agents and compliance teams.
 
-**10,065 verified nodes. 39 active sovereign pillars. $0.01 per node. Subscriptions from $49/month.**
+**10,000+ verified nodes. 39 active sovereign pillars. $0.01 per node. Subscriptions from $49/month.**
 
 Bidda is a public signatory of the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) and publishes a [CISA Cybersecurity Performance Goals crosswalk](https://bidda.com/cisa/cpg-crosswalk) mapping the registry to CISA's CPGs.
 
@@ -340,7 +340,7 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 10,065 nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 10,000+ nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt - **$0.01** |
