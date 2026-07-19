@@ -1,6 +1,7 @@
 # Bidda Sovereign Intelligence - Developer Documentation
 
 [![smithery badge](https://smithery.ai/badge/bidda-ai/bidda-compliance)](https://smithery.ai/servers/bidda-ai/bidda-compliance)
+[![bidda-mcp MCP server](https://glama.ai/mcp/servers/Bidda-Ai/bidda-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Bidda-Ai/bidda-mcp)
 [![CISA Secure by Design](https://img.shields.io/badge/CISA-Secure%20by%20Design%20Pledge-blue)](https://bidda.com/cisa/secure-by-design)
 
 > **Public documentation repository.** Integration guides, API reference, and SDK documentation for [bidda.com](https://bidda.com).
