@@ -3,6 +3,7 @@
 [![smithery badge](https://smithery.ai/badge/bidda-ai/bidda-compliance)](https://smithery.ai/servers/bidda-ai/bidda-compliance)
 [![bidda-mcp MCP server](https://glama.ai/mcp/servers/Bidda-Ai/bidda-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Bidda-Ai/bidda-mcp)
 [![CISA Secure by Design](https://img.shields.io/badge/CISA-Secure%20by%20Design%20Pledge-blue)](https://bidda.com/cisa/secure-by-design)
+[![MCP Marketplace](https://img.shields.io/badge/MCP%20Marketplace-Indexed-blueviolet)](https://getlulu.dev/mcps/bidda-mcp)
 
 > **Public documentation repository.** Integration guides, API reference, and SDK documentation for [bidda.com](https://bidda.com).
 
@@ -12,7 +13,7 @@
 
 Bidda is the world's first source-verified, cryptographically-signed regulatory compliance intelligence registry - built for autonomous AI agents and compliance teams.
 
-**10,000+ verified nodes. 39 active sovereign pillars. $0.01 per node. Subscriptions from $49/month.**
+**10,100+ verified nodes. 39 active sovereign pillars. $0.01 per node. Subscriptions from $49/month.**
 
 Bidda is a public signatory of the [CISA Secure by Design Pledge](https://bidda.com/cisa/secure-by-design) and publishes a [CISA Cybersecurity Performance Goals crosswalk](https://bidda.com/cisa/cpg-crosswalk) mapping the registry to CISA's CPGs.
 
@@ -53,7 +54,7 @@ console.log(node._receipt.statement); // → audit-ready string
 ```python
 import requests
 
-vault_url = 'https://bidda.com/api/v1/vault/nodes/eu-gdpr-article-33.json'
+vault_url = 'https://bidda.com/api/v1/vault/nodes/gdpr-article-33-breach-notification-to-supervisory-authority.json'
 
 res = requests.get(vault_url, headers={'skyfire-pay-id': 'YOUR_SKYFIRE_PAY_JWT'})
 node = res.json()
@@ -168,7 +169,7 @@ Every vault unlock returns a `_receipt` block appended to the JSON response. Thi
 ```json
 {
   "_receipt": {
-    "node_id":        "eu-gdpr-article-33",
+    "node_id":        "gdpr-article-33-breach-notification-to-supervisory-authority",
     "version":        "2.1.3",
     "integrity_hash": "sha256:a3f9c2e1b4d8f7a6...",
     "accessed_at":    "2026-05-01T09:32:14.000Z",
@@ -176,7 +177,7 @@ Every vault unlock returns a `_receipt` block appended to the JSON response. Thi
     "amount_usd":     "0.01",
     "currency":       "USDC/Base",
     "registry":       "Bidda Sovereign Intelligence",
-    "statement":      "Access to eu-gdpr-article-33 v2.1.3 verified at 2026-05-01T09:32:14.000Z. Integrity hash sha256:a3f9... recorded at time of access."
+    "statement":      "Access to gdpr-article-33-breach-notification-to-supervisory-authority v2.1.3 verified at 2026-05-01T09:32:14.000Z. Integrity hash sha256:a3f9... recorded at time of access."
   }
 }
 ```
@@ -341,7 +342,7 @@ async function payAndFetch(privateKey) {
 
 | Endpoint | Method | Auth | Description |
 |---|---|---|---|
-| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 10,000+ nodes, 6 fields each |
+| `/api/v1/nodes/index.json` | GET | None | Discovery index of all 10,100+ nodes, 6 fields each |
 | `/api/v1/nodes/{nodeId}.json` | GET | None | Single node discovery record (free) |
 | `/api/v1/nodes/latest.json` | GET | None | 20 most recently updated nodes |
 | `/api/v1/vault/nodes/{nodeId}.json` | GET | Required | Full 13-key node + receipt - **$0.01** |
@@ -469,7 +470,7 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
 
 ```json
 {
-  "node_id": "eu-gdpr-article-33",
+  "node_id": "gdpr-article-33-breach-notification-to-supervisory-authority",
   "title": "GDPR Article 33 - Personal Data Breach Notification",
   "domain": "Cybersecurity",
   "version": "2.1.3",
@@ -504,7 +505,7 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
     "EDPB Guidelines 9/2022 on personal data breach notification under GDPR"
   ],
   "_receipt": {
-    "node_id":        "eu-gdpr-article-33",
+    "node_id":        "gdpr-article-33-breach-notification-to-supervisory-authority",
     "version":        "2.1.3",
     "integrity_hash": "sha256:a3f9c2e1b4d8f7a6...",
     "accessed_at":    "2026-05-01T09:32:14.000Z",
@@ -512,7 +513,7 @@ Annual billing saves 20% on every tier. Full-registry access is an Enterprise fe
     "amount_usd":     "0.01",
     "currency":       "USDC/Base",
     "registry":       "Bidda Sovereign Intelligence",
-    "statement":      "Access to eu-gdpr-article-33 v2.1.3 verified at 2026-05-01T09:32:14.000Z. Integrity hash sha256:a3f9... recorded at time of access."
+    "statement":      "Access to gdpr-article-33-breach-notification-to-supervisory-authority v2.1.3 verified at 2026-05-01T09:32:14.000Z. Integrity hash sha256:a3f9... recorded at time of access."
   }
 }
 ```
@@ -547,17 +548,17 @@ Pricing is per-node ($0.01) or by monthly subscription - see the [Pricing](#pric
 
 ```javascript
 // 1. Free discovery call - check the live hash
-const live = await fetch('https://bidda.com/api/v1/nodes/eu-gdpr-article-33.json');
+const live = await fetch('https://bidda.com/api/v1/nodes/gdpr-article-33-breach-notification-to-supervisory-authority.json');
 const { version, verification } = await live.json();
 
 // 2. Compare against your cached hash
 if (cached.integrity_hash !== verification.integrity_hash) {
   // Regulation updated - re-unlock for $0.01 to get fresh content + new receipt
-  const fresh = await fetch('https://bidda.com/api/v1/vault/nodes/eu-gdpr-article-33.json', {
+  const fresh = await fetch('https://bidda.com/api/v1/vault/nodes/gdpr-article-33-breach-notification-to-supervisory-authority.json', {
     headers: { 'skyfire-pay-id': skyfireToken }
   });
   const updated = await fresh.json();
-  cache.set('eu-gdpr-article-33', updated);
+  cache.set('gdpr-article-33-breach-notification-to-supervisory-authority', updated);
   auditLog.record({ event: 'node_refreshed', receipt: updated._receipt });
 }
 ```

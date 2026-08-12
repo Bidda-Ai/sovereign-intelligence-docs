@@ -2,7 +2,7 @@
 
 Bidda nodes are served through a live two-tier API. The discovery tier is always free. The vault tier requires a $0.01 USDC micropayment - settled via Skyfire (primary path for AI agents), L402 / USDC on Base (Web3 path), or Direct Base USDC (no account required).
 
-Registry: **10,000+ verified nodes across 39 sovereign pillars.**
+Registry: **10,100+ verified nodes across 39 sovereign pillars.**
 
 ---
 
@@ -11,7 +11,7 @@ Registry: **10,000+ verified nodes across 39 sovereign pillars.**
 Use the discovery tier for agent planning, node listing, and freshness checks.
 
 ```bash
-# List all 10,000+ nodes
+# List all 10,100+ nodes
 curl https://bidda.com/api/v1/nodes/index.json
 
 # Fetch a single node's discovery metadata
@@ -179,7 +179,7 @@ curl https://bidda.com/api/v1/nodes/index.json
 curl https://bidda.com/api/v1/vault/nodes/{node_id}.json \
   -H "skyfire-pay-id: YOUR_SKYFIRE_PAY_JWT"
 
-# Full registry access (all 10,000+ nodes) is an Enterprise subscription feature - info@bidda.com
+# Full registry access (all 10,100+ nodes) is an Enterprise subscription feature - info@bidda.com
 ```
 
 Subscribers can bulk-pull with a single API key. See the [pricing section](../README.md#pricing) for subscription tiers.
